@@ -113,4 +113,5 @@ client.on('ready', () => {
 });
 
 //디스코드 앱 인증 키
-client.login('Mzg5MDQzNjYwMjE1NTQ5OTUy.XwCqUQ.DjfnWVwZTrtOOYdtIHDwSE0oo80');
+var discord_key = require('./key/key.js');
+client.login(discord_key.key_value);
