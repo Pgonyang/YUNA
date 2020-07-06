@@ -14,8 +14,8 @@ client.on('message', msg => {
         //변수 선언 let은 var와 const 사이의 느낌
         let save_data = [];
         let save_data2 = [];
-		let save_data3 = [];
-		let save_data4 = [];
+        let save_data3 = [];
+        let save_data4 = [];
         let save_img = [];
         let save_img2 = [];
         let time;
@@ -24,8 +24,8 @@ client.on('message', msg => {
         let pop;
         let url;
         let guild;
-		let murung;
-		let union;
+        let murung;
+        let union;
         //async, await을 사용한 비동기 함수 (순서대로 실행하기 위함)
         const getHtml = async () => {
             try {
@@ -49,9 +49,9 @@ client.on('message', msg => {
                 const $bodyList2 = $("div.col-6.col-md-8.col-lg-6");
                 const $bodyList3 = $("div.col-lg-8");
                 const $bodyList4 = $("div.col-lg-2.col-md-4.col-sm-4.col-12.mt-3");
-				const $bodyList5 = $("div.py-0.py-sm-4");
-				const $bodyList6 = $("div.pt-3.pb-2.pb-sm-3");
-				
+                const $bodyList5 = $("div.py-0.py-sm-4");
+                const $bodyList6 = $("div.pt-3.pb-2.pb-sm-3");
+
                 //정보를 긁어와 배열에 저장
                 $bodyList.each(function(i, elem) {
                     save_data[i] = {
@@ -78,13 +78,13 @@ client.on('message', msg => {
                         text: $(this).text()
                     };
                 });
-				$bodyList5.each(function(i, elem) {
+                $bodyList5.each(function(i, elem) {
                     save_data3[i] = {
                         //무릉 층수
                         text: $(this).find('h1').text()
                     };
                 });
-				$bodyList6.each(function(i, elem) {
+                $bodyList6.each(function(i, elem) {
                     save_data4[i] = {
                         //유니온 레벨
                         text: $(this).find('span').text()
@@ -100,8 +100,8 @@ client.on('message', msg => {
                 time = time.replace("                                일 전", "");
                 time = time.replace("마지막 활동일: ", "");
                 time = time.replace("\n\n                                    \n                                                            \n                        ", "");
-				murung = save_data3[0].text.toString().slice(0,2);
-				union = save_data4[0].text.toString().slice(3,7);
+                murung = save_data3[0].text.toString().slice(0, 2);
+                union = save_data4[0].text.toString().slice(3, 7);
             })
         //setTimeout으로 실행해야 비동기로 실행되는 윗 코드가 끝난 후 작업이 시작됨
         //시간이 되면 아래도 비동기로 교체해주면 되긴 할 듯?
@@ -116,7 +116,7 @@ client.on('message', msg => {
                     .setDescription("LV." + lv + " " + job + "\n인기도 : " + pop) //레벨, 직업, 인기도 출력
                     //.setThumbnail("") //썸네일 이미지 (우측에 나옴)
                     .addField('무릉도장', murung + "층", true) //추가할 항목은 이와 같이
-					.addField('유니온', union, true)
+                    .addField('유니온', union, true)
                     .setImage(save_img[0].img.toString().replace("https", "http")) //캐릭터 이미지 출력
                     //.setTimestamp() 타임스탬프 //embed가 제작된 시간
                     .setFooter('마지막 업데이트 : ' + time + "일 전", 'http://maple.gg'); //하단 텍스트 영역, 최근 갱신 일 + maple.gg링크
