@@ -2,10 +2,45 @@
 const Discord = require('discord.js');
 const axios = require("axios");
 const cheerio = require("cheerio");
-const Sequelize = require('sequelize');
+var Sequelize = require('sequelize');
 //discord client 선언
 const client = new Discord.Client();
-//크롤링한 정보를 저장한 array
+const key = require('./key/key.js');
+//db 연동
+const sequelize = new Sequelize(
+  'yuna', // 데이터베이스 이름
+  'root', // 유저 명
+  key.db_pw, // 비밀번호
+  {
+    'host': 'localhost', // 데이터베이스 호스트
+    'dialect': 'mariadb', // 사용할 데이터베이스 종류
+  }
+);
+//테이블 정의
+const tb = sequelize.define('test_tb', {
+  test_name: {
+    type: Sequelize.STRING,
+    //primaryKey: true,
+    allowNull: false
+  },
+  test_trigger: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  test_push: {
+    type: Sequelize.STRING,
+    allowNull: false
+  }
+},{
+    classMethods: {},
+    tableName: 'test_tb',
+    freezeTableName: true,
+    underscored: true,
+    timestamps: false
+});
+//테이블 생성 (이미 있을 경우 생성 x)
+tb.sync()
+//tb.create({test_name:"name",test_trigger:"trigger",test_push:"push"})
 
 //디스코드 메세지를 받을 경우
 client.on('message', msg => {
@@ -135,5 +170,4 @@ client.on('ready', () => {
 });
 
 //디스코드 앱 인증 키
-var discord_key = require('./key/key.js');
-client.login(discord_key.key_value);
+client.login(key.key_value);
