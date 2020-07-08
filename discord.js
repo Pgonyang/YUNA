@@ -40,7 +40,14 @@ const tb = sequelize.define('test_tb', {
 });
 //테이블 생성 (이미 있을 경우 생성 x)
 tb.sync()
-//tb.create({test_name:"name",test_trigger:"trigger",test_push:"push"})
+//tb.create({test_name:"name",test_trigger:"trigger",test_push:"push"}) insert
+
+tb.findOne({
+  where: { test_name: 'test' }
+})
+.then((tb) => {
+  console.log('검색 결과: ', tb.dataValues); //db 검색
+});
 
 //디스코드 메세지를 받을 경우
 client.on('message', msg => {
