@@ -41,7 +41,7 @@ const tb = sequelize.define('test_tb', {
 //테이블 생성 (이미 있을 경우 생성 x)
 //tb.sync()
 //tb.create({test_name:"name1",test_trigger:"ping",test_push:"pong"})
-/*
+/* value 삭제
 tb.destroy({where: {test_name: 'test'}}).then(function(result) {
     res.json({});
 }).catch(function(err) {
@@ -50,13 +50,18 @@ tb.destroy({where: {test_name: 'test'}}).then(function(result) {
 */
 //디스코드 메세지를 받을 경우
 client.on('message', msg => {
+	//받은 메세지의 앞부분이 일치할 경우
 	if (msg.content.slice(0, 5) == "!테스트 ") {
+		//db 서치
 		tb.findOne({
 			where: {
+				//트리거와 msg.content.slice(5)가 일치하는지 체크
 				test_trigger: msg.content.slice(5)
 			}
 		})
+		//일치하는 것이 있을 경우
 		.then((tb) => {
+			//해당 db의 test_push 값을 디스코드 메세지로 전송 
 			msg.reply(tb.dataValues.test_push);
 		});
 		
