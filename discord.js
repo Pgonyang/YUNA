@@ -8,7 +8,7 @@ const client = new Discord.Client();
 const key = require('./key/key.js');
 //db 연동
 const sequelize = new Sequelize(
-    'yuna', // 데이터베이스 이름
+    'YUNA', // 데이터베이스 이름
     'root', // 유저 명
     key.db_pw, // 비밀번호
     {
@@ -39,8 +39,8 @@ const tb = sequelize.define('test_tb', {
     timestamps: false
 });
 //테이블 생성 (이미 있을 경우 생성 x)
-//tb.sync()
-//tb.create({test_name:"name1",test_trigger:"ping",test_push:"pong"})
+tb.sync()
+//tb.create({test_name:"test_name",test_trigger:"test_input",test_push:"test_output"})
 /* value 삭제
 tb.destroy({where: {test_name: 'test'}}).then(function(result) {
     res.json({});
@@ -66,6 +66,18 @@ client.on('message', msg => {
 		});
 		
 	}
+	else if (msg.content.slice(0, 4) == "!수정 ") {
+		tb.update({test_push: msg.content.slice(4)}, {where: {test_name: 'test_name'}})
+		.then(result => {
+			msg.reply("데이터의 수정이 완료되었어요");
+		})
+		.catch(err => {
+			console.error(err);
+			msg.reply("오류가 발생했어요");
+		});
+		
+		
+	}
 	
     //받은 메세지의 앞부분이 일치할 경우
     else if (msg.content.slice(0, 4) == "!정보 ") {
@@ -84,13 +96,14 @@ client.on('message', msg => {
         let guild;
         let murung;
         let union;
+		let name = msg.content.slice(4);
         //async, await을 사용한 비동기 함수 (순서대로 실행하기 위함)
         const getHtml = async () => {
             try {
                 //읽어올 페이지 주소, !정보 이후의 텍스트를 가져와 붙인 뒤, encodeURI를 사용하여 한글을 인코딩시킴
                 //axios는 nodeJS와 브라우저를 위한 HTTP통신 js 라이브러리
-                url = encodeURI("https://maple.gg/u/" + msg.content.slice(4));
-                return await axios.get(encodeURI("https://maple.gg/u/" + msg.content.slice(4)));
+                url = encodeURI("https://maple.gg/u/" + name);
+                return await axios.get(encodeURI("https://maple.gg/u/" + name));
             } catch (error) {
                 //에러가 날 경우 에러출력
                 msg.reply("웹 크롤링 에러입니다");
@@ -168,7 +181,7 @@ client.on('message', msg => {
                 //discord embed 기능을 사용하여 유저에게 결과 제공
                 const exampleEmbed = new Discord.MessageEmbed()
                     //.setColor('#0099ff') embed 테두리 색
-                    .setTitle(msg.content.slice(4)) //닉네임
+                    .setTitle(name) //닉네임
                     .setURL(url) //maple.gg 캐릭터 상세 링크
                     .setAuthor(guild, save_img2[0].img.toString().replace("https", "http")) //https 형식을 discord 메세지가 출력못해서 http로 변경 작업, 길드 마크
                     .setDescription("LV." + lv + " " + job + "\n인기도 : " + pop) //레벨, 직업, 인기도 출력
