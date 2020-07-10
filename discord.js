@@ -66,6 +66,24 @@ client.on('message', msg => {
 		});
 		
 	}
+	else if (msg.content.slice(0, 4) == "!생성 ") {
+		tb.findOne({
+			where: {
+				//트리거와 msg.content.slice(5)가 일치하는지 체크
+				test_name: msg.content.slice(4)
+			}
+		})
+		//일치하는 것이 있을 경우
+		.then((sc) => {
+			if(sc){
+				msg.reply("이미 존재하는 이름이에요");
+			}
+			else {
+				tb.create({test_name:msg.content.slice(4),test_trigger:"test_input",test_push:"test_output"})
+				msg.reply("데이터의 생성이 완료되었어요");
+			}
+		});
+	}
 	else if (msg.content.slice(0, 4) == "!수정 ") {
 		tb.update({test_push: msg.content.slice(4)}, {where: {test_name: 'test_name'}})
 		.then(result => {
