@@ -38,8 +38,117 @@ const tb = sequelize.define('test_tb', {
     underscored: true,
     timestamps: false
 });
+tb.sync();
+
+const boss = sequelize.define('boss', {
+    boss_code: {
+        type: Sequelize.STRING,
+        primaryKey: true,
+        allowNull: false
+    },
+    boss_name: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    boss_diff: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
+    boss_money: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
+	if_weekly: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+    }
+}, {
+    classMethods: {},
+    tableName: 'boss',
+    freezeTableName: true,
+    underscored: true,
+    timestamps: false
+});
+boss.sync();
+/* 보스 정보 DB추가 영역... 나중에 이미지 넣을일 생기면 수정해야함
+boss.create({boss_code:"이자쿰",boss_name:"자쿰",boss_diff:"1",boss_money:200000,if_weekly:false})
+boss.create({boss_code:"노자쿰",boss_name:"자쿰",boss_diff:"2",boss_money:612500,if_weekly:false})
+boss.create({boss_code:"카자쿰",boss_name:"자쿰",boss_diff:"3",boss_money:16200000,if_weekly:true})
+boss.create({boss_code:"이혼테",boss_name:"혼테일",boss_diff:"1",boss_money:882000,if_weekly:false})
+boss.create({boss_code:"노혼테",boss_name:"혼테일",boss_diff:"2",boss_money:1012500,if_weekly:false})
+boss.create({boss_code:"카혼테",boss_name:"혼테일",boss_diff:"3",boss_money:1352000,if_weekly:false})
+boss.create({boss_code:"노카웅",boss_name:"카웅",boss_diff:"2",boss_money:1250000,if_weekly:false})
+boss.create({boss_code:"노핑빈",boss_name:"핑크빈",boss_diff:"2",boss_money:1404500,if_weekly:false})
+boss.create({boss_code:"카핑빈",boss_name:"핑크빈",boss_diff:"3",boss_money:12800000,if_weekly:true})
+boss.create({boss_code:"이파풀",boss_name:"파풀라투스",boss_diff:"1",boss_money:684500,if_weekly:false})
+boss.create({boss_code:"노파풀",boss_name:"파풀라투스",boss_diff:"2",boss_money:2664500,if_weekly:false})
+boss.create({boss_code:"카파풀",boss_name:"파풀라투스",boss_diff:"3",boss_money:26450000,if_weekly:true})
+boss.create({boss_code:"이시그",boss_name:"시그너스",boss_diff:"1",boss_money:9112500,if_weekly:true})
+boss.create({boss_code:"노시그",boss_name:"시그너스",boss_diff:"2",boss_money:14450000,if_weekly:true})
+boss.create({boss_code:"노더스",boss_name:"더스크",boss_diff:"2",boss_money:49612500,if_weekly:true})
+boss.create({boss_code:"카더스",boss_name:"더스크",boss_diff:"3",boss_money:92450000,if_weekly:true})
+boss.create({boss_code:"노반반",boss_name:"반반",boss_diff:"2",boss_money:968000,if_weekly:false})
+boss.create({boss_code:"카반반",boss_name:"반반",boss_diff:"3",boss_money:16200000,if_weekly:true})
+boss.create({boss_code:"노피에",boss_name:"피에르",boss_diff:"2",boss_money:968000,if_weekly:false})
+boss.create({boss_code:"카피에",boss_name:"피에르",boss_diff:"3",boss_money:16200000,if_weekly:true})
+boss.create({boss_code:"노블퀸",boss_name:"블러디 퀸",boss_diff:"2",boss_money:968000,if_weekly:false})
+boss.create({boss_code:"카블퀸",boss_name:"블러디 퀸",boss_diff:"3",boss_money:16200000,if_weekly:true})
+boss.create({boss_code:"노벨룸",boss_name:"벨룸",boss_diff:"2",boss_money:968000,if_weekly:false})
+boss.create({boss_code:"카벨룸",boss_name:"벨룸",boss_diff:"3",boss_money:21012500,if_weekly:true})
+boss.create({boss_code:"노힐라",boss_name:"힐라",boss_diff:"2",boss_money:800000,if_weekly:false})
+boss.create({boss_code:"하힐라",boss_name:"힐라",boss_diff:"4",boss_money:11250000,if_weekly:true})
+boss.create({boss_code:"이레온",boss_name:"반 레온",boss_diff:"1",boss_money:1058000,if_weekly:false})
+boss.create({boss_code:"노레온",boss_name:"반 레온",boss_diff:"2",boss_money:1458000,if_weekly:false})
+boss.create({boss_code:"하레온",boss_name:"반 레온",boss_diff:"4",boss_money:2450000,if_weekly:false})
+boss.create({boss_code:"이아카",boss_name:"아카이럼",boss_diff:"1",boss_money:1152000,if_weekly:false})
+boss.create({boss_code:"노아카",boss_name:"아카이럼",boss_diff:"2",boss_money:2520500,if_weekly:false})
+boss.create({boss_code:"이매그",boss_name:"매그너스",boss_diff:"1",boss_money:722000,if_weekly:false})
+boss.create({boss_code:"노매그",boss_name:"매그너스",boss_diff:"2",boss_money:2592000,if_weekly:false})
+boss.create({boss_code:"하매그",boss_name:"매그너스",boss_diff:"4",boss_money:19012500,if_weekly:true})
+boss.create({boss_code:"노스우",boss_name:"스우",boss_diff:"2",boss_money:32512500,if_weekly:true})
+boss.create({boss_code:"하스우",boss_name:"스우",boss_diff:"4",boss_money:74112500,if_weekly:true})
+boss.create({boss_code:"노데미",boss_name:"데미안",boss_diff:"2",boss_money:33800000,if_weekly:true})
+boss.create({boss_code:"하데미",boss_name:"데미안",boss_diff:"2",boss_money:70312500,if_weekly:true})
+boss.create({boss_code:"이루시",boss_name:"루시드",boss_diff:"1",boss_money:35112500,if_weekly:true})
+boss.create({boss_code:"노루시",boss_name:"루시드",boss_diff:"2",boss_money:40612500,if_weekly:true})
+boss.create({boss_code:"하루시",boss_name:"루시드",boss_diff:"4",boss_money:80000000,if_weekly:true})
+boss.create({boss_code:"노말윌",boss_name:"윌",boss_diff:"2",boss_money:46512500,if_weekly:true})
+boss.create({boss_code:"하드윌",boss_name:"윌",boss_diff:"4",boss_money:88200000,if_weekly:true})
+boss.create({boss_code:"진힐라",boss_name:"진 힐라",boss_diff:"4",boss_money:110450000,if_weekly:true})
+boss.create({boss_code:"노듄켈",boss_name:"듄켈",boss_diff:"2",boss_money:52812500,if_weekly:true})
+boss.create({boss_code:"하듄켈",boss_name:"듄켈",boss_diff:"4",boss_money:96800000,if_weekly:true})
+boss.create({boss_code:"검마법",boss_name:"검은 마법사",boss_diff:"4",boss_money:500000000,if_weekly:true})
+*/
+
+const cnt_boss = sequelize.define('cnt_boss', {
+    boss_code: {
+        type: Sequelize.STRING,
+        primaryKey: true,
+        allowNull: false
+    },
+    boss_diff: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
+    boss_money: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
+	if_weekly: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+    }
+}, {
+    classMethods: {},
+    tableName: 'cnt_boss',
+    freezeTableName: true,
+    underscored: true,
+    timestamps: false
+});
 //테이블 생성 (이미 있을 경우 생성 x)
-tb.sync()
+
+
+
 //tb.create({test_name:"test_name",test_trigger:"test_input",test_push:"test_output"})
 /* value 삭제
 tb.destroy({where: {test_name: 'test'}}).then(function(result) {
@@ -52,6 +161,7 @@ tb.destroy({where: {test_name: 'test'}}).then(function(result) {
 client.on('message', msg => {
 	//받은 메세지의 앞부분이 일치할 경우
 	if (msg.content.slice(0, 5) == "!테스트 ") {
+		/*
 		//db 서치
 		tb.findOne({
 			where: {
@@ -64,8 +174,34 @@ client.on('message', msg => {
 			//해당 db의 test_push 값을 디스코드 메세지로 전송 
 			msg.reply(tb.dataValues.test_push);
 		});
-		
+		*/
+		//db 서치
+		boss.findAll({
+			where: {
+				//트리거와 msg.content.slice(5)가 일치하는지 체크
+				if_weekly: true
+			},
+			raw: true,
+			order: [['boss_money', 'ASC']]
+		})
+		//일치하는 것이 있을 경우
+		.then((bs) => {
+			//해당 db의 test_push 값을 디스코드 메세지로 전송 
+			var i = 0;
+			while(true){
+				if(bs[i]){
+					console.log(bs[i])
+					i++
+				}
+				else {
+					console.log(i)
+					break
+				}
+			}
+			
+		});		
 	}
+	//db 생성
 	else if (msg.content.slice(0, 4) == "!생성 ") {
 		tb.findOne({
 			where: {
