@@ -161,7 +161,6 @@ tb.destroy({where: {test_name: 'test'}}).then(function(result) {
 client.on('message', msg => {
 	//받은 메세지의 앞부분이 일치할 경우
 	if (msg.content.slice(0, 5) == "!테스트 ") {
-		/*
 		//db 서치
 		tb.findOne({
 			where: {
@@ -174,31 +173,42 @@ client.on('message', msg => {
 			//해당 db의 test_push 값을 디스코드 메세지로 전송 
 			msg.reply(tb.dataValues.test_push);
 		});
-		*/
-		//db 서치
+	}
+	else if (msg.content == "!주간보스") {
 		boss.findAll({
 			where: {
-				//트리거와 msg.content.slice(5)가 일치하는지 체크
 				if_weekly: true
 			},
-			raw: true,
-			order: [['boss_money', 'ASC']]
+			raw: true, //dataValues만 사용
+			order: [['boss_money', 'ASC']] //정렬
 		})
-		//일치하는 것이 있을 경우
 		.then((bs) => {
-			//해당 db의 test_push 값을 디스코드 메세지로 전송 
 			var i = 0;
+			const boss_embed = new Discord.MessageEmbed().setTitle("주간 보스표")
+			//.setColor('#0099ff') embed 테두리 색
 			while(true){
 				if(bs[i]){
-					console.log(bs[i])
+					if(bs[i].boss_diff == 1){
+						diff = "이지"
+					}
+					else if(bs[i].boss_diff == 2){
+						diff = "노말"
+					}
+					else if(bs[i].boss_diff == 3){
+						diff = "카오스"
+					}
+					else if(bs[i].boss_diff == 4){
+						diff = "하드"
+					}
+					boss_embed.addField(bs[i].boss_name + " (" + diff + ")", bs[i].boss_money + "메소", true)
 					i++
 				}
 				else {
 					console.log(i)
+					msg.reply(boss_embed);	
 					break
 				}
 			}
-			
 		});		
 	}
 	//db 생성
