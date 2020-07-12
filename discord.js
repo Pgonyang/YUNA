@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 const axios = require("axios");
 const cheerio = require("cheerio");
 var Sequelize = require('sequelize');
+const pad = require('pad')
 //discord client 선언
 const client = new Discord.Client();
 const key = require('./key/key.js');
@@ -145,11 +146,6 @@ const cnt_boss = sequelize.define('cnt_boss', {
     underscored: true,
     timestamps: false
 });
-//테이블 생성 (이미 있을 경우 생성 x)
-
-
-
-//tb.create({test_name:"test_name",test_trigger:"test_input",test_push:"test_output"})
 /* value 삭제
 tb.destroy({where: {test_name: 'test'}}).then(function(result) {
     res.json({});
@@ -184,7 +180,8 @@ client.on('message', msg => {
 		})
 		.then((bs) => {
 			var i = 0;
-			const boss_embed = new Discord.MessageEmbed().setTitle("주간 보스표")
+			var text = "\n";
+			//const boss_embed = new Discord.MessageEmbed().setTitle("주간 보스표")
 			//.setColor('#0099ff') embed 테두리 색
 			while(true){
 				if(bs[i]){
@@ -200,14 +197,16 @@ client.on('message', msg => {
 					else if(bs[i].boss_diff == 4){
 						diff = "하드"
 					}
-					boss_embed.addField(bs[i].boss_name + " (" + diff + ")", bs[i].boss_money + "메소", true)
-					i++
+					text = text + bs[i].boss_name + " (" + diff + ") " + pad(10,bs[i].boss_money) + "메소 \n" 
+					//boss_embed.addField(bs[i].boss_name + " (" + diff + ")", bs[i].boss_money + "메소", true) 최대길이 25라서 embed 사용 x
 				}
 				else {
-					console.log(i)
-					msg.reply(boss_embed);	
+					text = text + "(검은 마법사는 월간 보스)"
+					//msg.reply(boss_embed);	
+					msg.reply(text);
 					break
 				}
+				i++
 			}
 		});		
 	}
