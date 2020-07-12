@@ -18,28 +18,24 @@ const sequelize = new Sequelize(
     }
 );
 //테이블 정의
-const tb = sequelize.define('test_tb', {
-    test_name: {
+const user = sequelize.define('user', {
+    user_name: {
         type: Sequelize.STRING,
-        //primaryKey: true,
+        primaryKey: true,
         allowNull: false
     },
-    test_trigger: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    test_push: {
+    user_discord: {
         type: Sequelize.STRING,
         allowNull: false
     }
 }, {
     classMethods: {},
-    tableName: 'test_tb',
+    tableName: 'user',
     freezeTableName: true,
     underscored: true,
     timestamps: false
 });
-tb.sync();
+user.sync();
 
 const boss = sequelize.define('boss', {
     boss_code: {
@@ -155,22 +151,7 @@ tb.destroy({where: {test_name: 'test'}}).then(function(result) {
 */
 //디스코드 메세지를 받을 경우
 client.on('message', msg => {
-	//받은 메세지의 앞부분이 일치할 경우
-	if (msg.content.slice(0, 5) == "!테스트 ") {
-		//db 서치
-		tb.findOne({
-			where: {
-				//트리거와 msg.content.slice(5)가 일치하는지 체크
-				test_trigger: msg.content.slice(5)
-			}
-		})
-		//일치하는 것이 있을 경우
-		.then((tb) => {
-			//해당 db의 test_push 값을 디스코드 메세지로 전송 
-			msg.reply(tb.dataValues.test_push);
-		});
-	}
-	else if (msg.content == "!주간보스") {
+	if (msg.content == "!주간보스") {
 		boss.findAll({
 			where: {
 				if_weekly: true
@@ -211,11 +192,10 @@ client.on('message', msg => {
 		});		
 	}
 	//db 생성
-	else if (msg.content.slice(0, 4) == "!생성 ") {
-		tb.findOne({
+	else if (msg.content.slice(0, 6) == "!계정생성 ") {
+		user.findOne({
 			where: {
-				//트리거와 msg.content.slice(5)가 일치하는지 체크
-				test_name: msg.content.slice(4)
+				user_name: msg.content.slice(6)
 			}
 		})
 		//일치하는 것이 있을 경우
@@ -224,11 +204,32 @@ client.on('message', msg => {
 				msg.reply("이미 존재하는 이름이에요");
 			}
 			else {
-				tb.create({test_name:msg.content.slice(4),test_trigger:"test_input",test_push:"test_output"})
-				msg.reply("데이터의 생성이 완료되었어요");
+				user.create({user_name:msg.content.slice(6),user_discord:msg.author.id})
+				msg.reply("데이터의 생성이 완료되었어요\n"+"닉네임:"+msg.content.slice(6)+"\n생성자 id:"+msg.author.id);
 			}
 		});
 	}
+	else if (msg.content.slice(0, 6) == "!계정삭제 ") {
+		user.findOne({
+			where: {
+				user_name: msg.content.slice(6), 
+				user_discord: msg.author.id
+			}
+		})
+		//일치하는 것이 있을 경우
+		.then((sc) => {
+			if(sc){
+				user.destroy({where: {user_name: msg.content.slice(6), user_discord:msg.author.id}}).then(function(result) {
+					msg.reply("데이터의 삭제가 완료되었습니다!");
+				}).catch(function(err) {
+				});
+			}
+			else {
+				msg.reply("일치하는 닉네임이 없거나, discord id가 일치하지 않습니다.\n디스코드 계정을 변경한 경우, 동환#0506으로 문의해주세요.");
+			}
+		})
+	}
+	/*
 	else if (msg.content.slice(0, 4) == "!수정 ") {
 		tb.update({test_push: msg.content.slice(4)}, {where: {test_name: 'test_name'}})
 		.then(result => {
@@ -238,10 +239,8 @@ client.on('message', msg => {
 			console.error(err);
 			msg.reply("오류가 발생했어요");
 		});
-		
-		
 	}
-	
+	*/
     //받은 메세지의 앞부분이 일치할 경우
     else if (msg.content.slice(0, 4) == "!정보 ") {
         //변수 선언 let은 var와 const 사이의 느낌
