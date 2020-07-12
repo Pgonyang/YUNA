@@ -333,12 +333,19 @@ client.on('message', msg => {
                 time = time.replace("                                일 전", "");
                 time = time.replace("마지막 활동일: ", "");
                 time = time.replace("\n\n                                    \n                                                            \n                        ", "");
-                murung = save_data3[0].text.toString().slice(0, 2);
-                union = save_data4[0].text.toString().slice(3, 7);
+				try{
+					murung = save_data3[0].text.toString().slice(0, 2) + "층";
+				} catch (exception) {
+					murung = "없음"
+				}
+				try{
+					union = save_data4[0].text.toString().slice(3, 7);
+				} catch (exception) {
+					union = "없음"
+				}	
+				output()
             })
-        //setTimeout으로 실행해야 비동기로 실행되는 윗 코드가 끝난 후 작업이 시작됨
-        //시간이 되면 아래도 비동기로 교체해주면 되긴 할 듯?
-        setTimeout(function() {
+        function output() {
             try {
                 //discord embed 기능을 사용하여 유저에게 결과 제공
                 const exampleEmbed = new Discord.MessageEmbed()
@@ -348,7 +355,7 @@ client.on('message', msg => {
                     .setAuthor(guild, save_img2[0].img.toString().replace("https", "http")) //https 형식을 discord 메세지가 출력못해서 http로 변경 작업, 길드 마크
                     .setDescription("LV." + lv + " " + job + "\n인기도 : " + pop) //레벨, 직업, 인기도 출력
                     //.setThumbnail("") //썸네일 이미지 (우측에 나옴)
-                    .addField('무릉도장', murung + "층", true) //추가할 항목은 이와 같이
+                    .addField('무릉도장', murung, true) //추가할 항목은 이와 같이
                     .addField('유니온', union, true)
                     .setImage(save_img[0].img.toString().replace("https", "http")) //캐릭터 이미지 출력
                     //.setTimestamp() 타임스탬프 //embed가 제작된 시간
@@ -358,7 +365,7 @@ client.on('message', msg => {
                 //만약 페이지 검색 결과가 없거나 서버에 문제가 생길 경우 유저에게 에러 출력
                 msg.reply("에러! 일치하는 닉네임이 없거나, 서버 에러입니다");
             }
-        }, 2000);
+        };
     }
 })
 
