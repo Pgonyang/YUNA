@@ -8,3 +8,13 @@ axios, cheerio를 사용하여 maple.gg에서 웹 크롤링을 하여 정보를 
 
 https://discord.com/api/oauth2/authorize?client_id=389043660215549952&permissions=8&scope=bot
 봇 테스트를 위한 링크 
+
+-- 명령어 --
+
+!정보 닉네임 //해당 닉네임의 캐릭터 정보 검색
+
+!주간보스 //주간보스 종류 및 결정석 가격 조회
+
+!계정생성 닉네임 //주간보스 및 추후 제작 될 기능의 기록에 사용될 닉네임 생성
+
+!계정삭제 닉네임 //생성된 계정의 삭제 (생성당시 discord id와 일치해야함)
