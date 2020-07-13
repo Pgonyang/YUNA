@@ -10,6 +10,7 @@ https://discord.com/api/oauth2/authorize?client_id=389043660215549952&permission
 봇 테스트를 위한 링크 
 
 -- 명령어 --
+
 !정보 닉네임 //해당 닉네임의 캐릭터 정보 검색
 
 !주간보스 //주간보스 종류 및 결정석 가격 조회
