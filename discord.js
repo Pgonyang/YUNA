@@ -340,6 +340,9 @@ client.on('message', msg => {
 				}
 				try{
 					union = save_data4[0].text.toString().slice(3, 7);
+					if(save_data4[0].text.toString().slice(0, 2) == "업적"){
+						union= "없음"
+					}
 				} catch (exception) {
 					union = "없음"
 				}	
