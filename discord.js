@@ -127,12 +127,14 @@ const cnt_boss = sequelize.define('cnt_boss', {
         type: Sequelize.INTEGER,
         allowNull: false
     },
-    boss_money: {
-        type: Sequelize.INTEGER,
+    user_name: {
+        type: Sequelize.STRING,
+		primaryKey: true,
         allowNull: false
     },
-	if_weekly: {
-        type: Sequelize.BOOLEAN,
+	create_at: {
+        type: Sequelize.DATE,
+		defaultValue: Sequelize.NOW,
         allowNull: false
     }
 }, {
@@ -142,6 +144,7 @@ const cnt_boss = sequelize.define('cnt_boss', {
     underscored: true,
     timestamps: false
 });
+cnt_boss.sync()
 /* value 삭제
 tb.destroy({where: {test_name: 'test'}}).then(function(result) {
     res.json({});
