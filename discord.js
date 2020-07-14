@@ -123,19 +123,15 @@ const cnt_boss = sequelize.define('cnt_boss', {
         primaryKey: true,
         allowNull: false
     },
-    boss_diff: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-    },
     user_name: {
         type: Sequelize.STRING,
 		primaryKey: true,
         allowNull: false
     },
 	create_at: {
-        type: Sequelize.DATE,
-		defaultValue: Sequelize.NOW,
-        allowNull: false
+        type: Sequelize.DATEONLY,
+		allowNull: false,
+		defaultValue: Sequelize.NOW
     }
 }, {
     classMethods: {},
@@ -145,6 +141,7 @@ const cnt_boss = sequelize.define('cnt_boss', {
     timestamps: false
 });
 cnt_boss.sync()
+boss.hasMany(cnt_boss, {as : "cnts"});
 /* value 삭제
 tb.destroy({where: {test_name: 'test'}}).then(function(result) {
     res.json({});
@@ -198,7 +195,7 @@ client.on('message', msg => {
 	else if (msg.content.slice(0, 6) == "!계정생성 ") {
 		user.findOne({
 			where: {
-				user_name: msg.content.slice(6)
+				user_name: msg.content.slice(6).trim()
 			}
 		})
 		//일치하는 것이 있을 경우
@@ -207,7 +204,7 @@ client.on('message', msg => {
 				msg.reply("이미 존재하는 이름이에요");
 			}
 			else {
-				user.create({user_name:msg.content.slice(6),user_discord:msg.author.id})
+				user.create({user_name:msg.content.slice(6).trim(),user_discord:msg.author.id})
 				msg.reply("데이터의 생성이 완료되었어요\n"+"닉네임:"+msg.content.slice(6)+"\n생성자 id:"+msg.author.id);
 			}
 		});
@@ -229,6 +226,30 @@ client.on('message', msg => {
 			}
 			else {
 				msg.reply("일치하는 닉네임이 없거나, discord id가 일치하지 않습니다.\n디스코드 계정을 변경한 경우, 동환#0506으로 문의해주세요.");
+			}
+		})
+	}
+	else if (msg.content.slice(0, 4) == "!기록 ") {
+		const string = msg.content.slice(4).split(',');
+		var name = string[0].trim();
+		var code = string[1].trim();
+		//보스 이름과 난이도는 다른 db에서 연동할 예정
+		user.findOne({
+			where: {
+				user_name: name
+			}
+		})
+		.then((sc) => {
+			try{
+				if(sc){
+					cnt_boss.create({user_name:name,boss_code:code})
+					msg.reply("user_name:"+name+",boss_code:"+code);
+				}
+				else {
+					msg.reply("기록하려는 계정이 존재하지 않습니다. 계정 이름을 확인해주세요.");
+				}
+			} catch (error) {
+				msg.reply("보스 설명이 잘못되었습니다. 보스 설명에 대한 자세한 정보는 추후 제공될 예정입니다");
 			}
 		})
 	}
