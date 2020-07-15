@@ -27,7 +27,67 @@ const user = sequelize.define('user', {
     user_discord: {
         type: Sequelize.STRING,
         allowNull: false
-    }
+    },
+	user_simbol_1_lv: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		defaultValue: '1'
+	},
+	user_simbol_1_cnt: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		defaultValue: 0
+	},
+	user_simbol_2_lv: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		defaultValue: 1
+	},
+	user_simbol_2_cnt: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		defaultValue: 0
+	},
+	user_simbol_3_lv: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		defaultValue: 1
+	},
+	user_simbol_3_cnt: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		defaultValue: 0
+	},
+	user_simbol_4_lv: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		defaultValue: 1
+	},
+	user_simbol_4_cnt: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		defaultValue: 0
+	},
+	user_simbol_5_lv: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		defaultValue: 1
+	},
+	user_simbol_5_cnt: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		defaultValue: 0
+	},
+	user_simbol_6_lv: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		defaultValue: 1
+	},
+	user_simbol_6_cnt: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		defaultValue: 0
+	}
 }, {
     classMethods: {},
     tableName: 'user',
@@ -35,7 +95,7 @@ const user = sequelize.define('user', {
     underscored: true,
     timestamps: false
 });
-user.sync();
+user.sync()
 
 const boss = sequelize.define('boss', {
     boss_code: {
@@ -142,6 +202,7 @@ const cnt_boss = sequelize.define('cnt_boss', {
 });
 cnt_boss.sync()
 boss.hasMany(cnt_boss, {as : "cnts"});
+
 /* value 삭제
 tb.destroy({where: {test_name: 'test'}}).then(function(result) {
     res.json({});
@@ -234,7 +295,6 @@ client.on('message', msg => {
 			const string = msg.content.slice(4).split(',');
 			var name = string[0].trim();
 			var code = string[1].trim();
-
 			//보스 이름과 난이도는 다른 db에서 연동할 예정
 			user.findOne({
 				where: {
