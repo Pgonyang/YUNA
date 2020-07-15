@@ -230,28 +230,41 @@ client.on('message', msg => {
 		})
 	}
 	else if (msg.content.slice(0, 4) == "!기록 ") {
-		const string = msg.content.slice(4).split(',');
-		var name = string[0].trim();
-		var code = string[1].trim();
-		//보스 이름과 난이도는 다른 db에서 연동할 예정
-		user.findOne({
-			where: {
-				user_name: name
-			}
-		})
-		.then((sc) => {
-			try{
+		try{
+			const string = msg.content.slice(4).split(',');
+			var name = string[0].trim();
+			var code = string[1].trim();
+
+			//보스 이름과 난이도는 다른 db에서 연동할 예정
+			user.findOne({
+				where: {
+					user_name: name
+				}
+			})
+			.then((sc) => {
 				if(sc){
-					cnt_boss.create({user_name:name,boss_code:code})
-					msg.reply("user_name:"+name+",boss_code:"+code);
+					boss.findOne({
+						where: {
+							boss_code: code
+						}
+					})
+					.then((bc) => {
+						if(bc){
+							cnt_boss.create({user_name:name,boss_code:code})
+							msg.reply("user_name:"+name+",boss_code:"+code);
+						}
+						else {
+							msg.reply("잘못된 보스 코드입니다 알맞은 코드를 입력해주세요.");
+						}
+					})
 				}
 				else {
-					msg.reply("기록하려는 계정이 존재하지 않습니다. 계정 이름을 확인해주세요.");
+					msg.reply("일치하는 계정이 없습니다. 계정 이름을 확인해주세요.");
 				}
-			} catch (error) {
-				msg.reply("보스 설명이 잘못되었습니다. 보스 설명에 대한 자세한 정보는 추후 제공될 예정입니다");
-			}
-		})
+			})	
+		} catch(error) {
+			msg.reply("계정이름, 보스코드 형태로 입력해주세요");
+		}
 	}
 	/*
 	else if (msg.content.slice(0, 4) == "!수정 ") {
