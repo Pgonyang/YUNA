@@ -2,7 +2,7 @@
 const Discord = require('discord.js');
 const axios = require("axios");
 const cheerio = require("cheerio");
-var Sequelize = require('sequelize');
+const Sequelize = require('sequelize');
 const pad = require('pad')
 //discord client 선언
 const client = new Discord.Client();
@@ -370,6 +370,51 @@ client.on('message', msg => {
 			})	
 		} catch(error) {
 			msg.reply("심볼 추가 형식: !심볼 닉네임,심볼위치,개수(비우면 일일 퀘스트 최대치)");
+		}
+	}
+	else if (msg.content.slice(0, 6) == "!심볼설정 ") {
+		try{
+			const string = msg.content.slice(6).split(',');
+			var name = string[0].trim();
+			var code = string[1].trim();
+			var lv = string[2].trim();
+			var num = string[3].trim();
+			if(lv > 20){
+				msg.reply("심볼 레벨은 20이 최대입니다");
+			}
+			else {
+				if(lv == 20){
+					num = 0;
+				}
+				var max = lv * lv + 11
+				if (num > max) {
+					msg.reply("최대 성장치보다 큰 값이 설정되었습니다.\n" + lv + " 레벨 심볼의 최대 성장치 : " + max);
+				}
+				else {
+					user.findOne({
+						where: {
+							user_name: name
+						}
+					})
+					.then((sc) => {
+						if(sc){
+							user.update({user_simbol_1_lv: lv, user_simbol_1_cnt: num}, {where: {user_name: name}})
+							.then(result => {
+								msg.reply("소멸의 여로 심볼 레벨 :" + lv + ", 성장치 : " + num + "로 설정 완료되었습니다.");
+							})
+							.catch(err => {
+								console.error(err);
+								msg.reply("데이터 수정에 실패했어요");
+							});
+						}
+						else {
+							msg.reply("일치하는 계정이 없습니다. 계정 이름을 확인해주세요.");
+						}
+					})	
+				}
+			}	
+		} catch(error) {
+			msg.reply("심볼 수정 형식: !심볼설정 닉네임,심볼,심볼 레벨,심볼 성장치");
 		}
 	}
 	/*
