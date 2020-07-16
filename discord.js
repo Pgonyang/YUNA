@@ -344,16 +344,20 @@ client.on('message', msg => {
 					while(true){
 						if(cnt >= max_cnt){
 							lv = lv + 1;
-							cnt = cnt - max_cnt + 1;
+							cnt = cnt - max_cnt;
 							max_cnt = lv * lv + 11;
 						}
 						else {
 							break;
 						}
 					}
+					let to_max = 0;
+					for(var i=lv; i<20; i++){
+						to_max = to_max + (i*i+11)
+					}
 					user.update({user_simbol_1_lv: lv, user_simbol_1_cnt: cnt}, {where: {user_name: name}})
 					.then(result => {
-						msg.reply("소멸의 여로 심볼 레벨 :" + lv + ", 성장치 : " + cnt + "/" + max_cnt);
+						msg.reply("소멸의 여로 심볼 레벨 :" + lv + ", 성장치 : " + cnt + "/" + max_cnt + "\n(만렙까지 앞으로 심볼 " + (to_max-cnt) + "개!)");
 					})
 					.catch(err => {
 						console.error(err);
