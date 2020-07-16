@@ -36,7 +36,7 @@ const user = sequelize.define('user', {
 	user_simbol_1_cnt: {
 		type: Sequelize.INTEGER,
 		allowNull: false,
-		defaultValue: 0
+		defaultValue: 1
 	},
 	user_simbol_2_lv: {
 		type: Sequelize.INTEGER,
@@ -46,7 +46,7 @@ const user = sequelize.define('user', {
 	user_simbol_2_cnt: {
 		type: Sequelize.INTEGER,
 		allowNull: false,
-		defaultValue: 0
+		defaultValue: 1
 	},
 	user_simbol_3_lv: {
 		type: Sequelize.INTEGER,
@@ -56,7 +56,7 @@ const user = sequelize.define('user', {
 	user_simbol_3_cnt: {
 		type: Sequelize.INTEGER,
 		allowNull: false,
-		defaultValue: 0
+		defaultValue: 1
 	},
 	user_simbol_4_lv: {
 		type: Sequelize.INTEGER,
@@ -66,7 +66,7 @@ const user = sequelize.define('user', {
 	user_simbol_4_cnt: {
 		type: Sequelize.INTEGER,
 		allowNull: false,
-		defaultValue: 0
+		defaultValue: 1
 	},
 	user_simbol_5_lv: {
 		type: Sequelize.INTEGER,
@@ -76,7 +76,7 @@ const user = sequelize.define('user', {
 	user_simbol_5_cnt: {
 		type: Sequelize.INTEGER,
 		allowNull: false,
-		defaultValue: 0
+		defaultValue: 1
 	},
 	user_simbol_6_lv: {
 		type: Sequelize.INTEGER,
@@ -86,7 +86,7 @@ const user = sequelize.define('user', {
 	user_simbol_6_cnt: {
 		type: Sequelize.INTEGER,
 		allowNull: false,
-		defaultValue: 0
+		defaultValue: 1
 	}
 }, {
     classMethods: {},
@@ -295,7 +295,6 @@ client.on('message', msg => {
 			const string = msg.content.slice(4).split(',');
 			var name = string[0].trim();
 			var code = string[1].trim();
-			//보스 이름과 난이도는 다른 db에서 연동할 예정
 			user.findOne({
 				where: {
 					user_name: name
@@ -323,7 +322,50 @@ client.on('message', msg => {
 				}
 			})	
 		} catch(error) {
-			msg.reply("계정이름, 보스코드 형태로 입력해주세요");
+			msg.reply("보스 기록 형식 : !기록 계정이름, 보스코드");
+		}
+	}
+	else if (msg.content.slice(0, 4) == "!심볼 ") {
+		try{
+			const string = msg.content.slice(4).split(',');
+			var name = string[0].trim();
+			var code = string[1].trim();
+			var num = string[2].trim();
+			user.findOne({
+				where: {
+					user_name: name
+				}
+			})
+			.then((sc) => {
+				if(sc){
+					let lv = sc.user_simbol_1_lv;
+					let cnt = sc.user_simbol_1_cnt + Number(num);
+					let max_cnt = lv * lv + 11;
+					while(true){
+						if(cnt >= max_cnt){
+							lv = lv + 1;
+							cnt = cnt - max_cnt + 1;
+							max_cnt = lv * lv + 11;
+						}
+						else {
+							break;
+						}
+					}
+					user.update({user_simbol_1_lv: lv, user_simbol_1_cnt: cnt}, {where: {user_name: name}})
+					.then(result => {
+						msg.reply("소멸의 여로 심볼 레벨 :" + lv + ", 성장치 : " + cnt + "/" + max_cnt);
+					})
+					.catch(err => {
+						console.error(err);
+						msg.reply("데이터 수정에 실패했어요");
+					});
+				}
+				else {
+					msg.reply("일치하는 계정이 없습니다. 계정 이름을 확인해주세요.");
+				}
+			})	
+		} catch(error) {
+			msg.reply("심볼 추가 형식: !심볼 닉네임,심볼위치,개수(비우면 일일 퀘스트 최대치)");
 		}
 	}
 	/*
