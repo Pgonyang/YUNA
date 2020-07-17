@@ -377,8 +377,47 @@ client.on('message', msg => {
 			const string = msg.content.slice(6).split(',');
 			var name = string[0].trim();
 			var code = string[1].trim();
+			console.log(code)
 			var lv = string[2].trim();
 			var num = string[3].trim();
+			let db_lv = "user_simbol_1_lv";
+			let db_cnt = "user_simbol_1_cnt";
+			let db_text = "소멸의 여로";
+			switch (code) {
+				case "1":
+					db_lv = "user_simbol_1_lv";
+					db_cnt = "user_simbol_1_cnt";
+					db_text = "소멸의 여로";
+					break;
+				case "2":
+					db_lv = "user_simbol_2_lv";
+					db_cnt = "user_simbol_2_cnt";
+					db_text = "츄츄 아일랜드";
+					break;
+				case "3":
+					db_lv = "user_simbol_3_lv";
+					db_cnt = "user_simbol_3_cnt";
+					db_text = "레헬른";
+					break;
+				case "4":
+					db_lv = "user_simbol_4_lv";
+					db_cnt = "user_simbol_4_cnt";
+					db_text = "아르카나";
+					break;
+				case "5":
+					db_lv = "user_simbol_5_lv";
+					db_cnt = "user_simbol_5_cnt";
+					db_text = "모라스";
+					break;	
+				case "6":
+					db_lv = "user_simbol_6_lv";
+					db_cnt = "user_simbol_6_cnt";
+					db_text = "에스페라";
+					break;
+			}
+			console.log(db_lv)
+			console.log(db_cnt)
+			console.log(db_text)
 			if(lv > 20){
 				msg.reply("심볼 레벨은 20이 최대입니다");
 			}
@@ -398,9 +437,9 @@ client.on('message', msg => {
 					})
 					.then((sc) => {
 						if(sc){
-							user.update({user_simbol_1_lv: lv, user_simbol_1_cnt: num}, {where: {user_name: name}})
+							user.update({db_lv: lv, db_cnt: num}, {where: {user_name: name}})
 							.then(result => {
-								msg.reply("소멸의 여로 심볼 레벨 :" + lv + ", 성장치 : " + num + "로 설정 완료되었습니다.");
+								msg.reply(db_text + " 심볼 레벨 :" + lv + ", 성장치 : " + num + "로 설정 완료되었습니다.");
 							})
 							.catch(err => {
 								console.error(err);
