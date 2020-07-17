@@ -380,9 +380,9 @@ client.on('message', msg => {
 			console.log(code)
 			var lv = string[2].trim();
 			var num = string[3].trim();
-			let db_lv = "user_simbol_1_lv";
-			let db_cnt = "user_simbol_1_cnt";
-			let db_text = "소멸의 여로";
+			let db_lv;
+			let db_cnt;
+			let db_text;
 			switch (code) {
 				case "1":
 					db_lv = "user_simbol_1_lv";
@@ -414,6 +414,8 @@ client.on('message', msg => {
 					db_cnt = "user_simbol_6_cnt";
 					db_text = "에스페라";
 					break;
+				default:
+					msg.reply("심볼 코드 입력 오류");
 			}
 			console.log(db_lv)
 			console.log(db_cnt)
