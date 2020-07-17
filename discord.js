@@ -380,46 +380,6 @@ client.on('message', msg => {
 			console.log(code)
 			var lv = string[2].trim();
 			var num = string[3].trim();
-			let db_lv;
-			let db_cnt;
-			let db_text;
-			switch (code) {
-				case "1":
-					db_lv = "user_simbol_1_lv";
-					db_cnt = "user_simbol_1_cnt";
-					db_text = "소멸의 여로";
-					break;
-				case "2":
-					db_lv = "user_simbol_2_lv";
-					db_cnt = "user_simbol_2_cnt";
-					db_text = "츄츄 아일랜드";
-					break;
-				case "3":
-					db_lv = "user_simbol_3_lv";
-					db_cnt = "user_simbol_3_cnt";
-					db_text = "레헬른";
-					break;
-				case "4":
-					db_lv = "user_simbol_4_lv";
-					db_cnt = "user_simbol_4_cnt";
-					db_text = "아르카나";
-					break;
-				case "5":
-					db_lv = "user_simbol_5_lv";
-					db_cnt = "user_simbol_5_cnt";
-					db_text = "모라스";
-					break;	
-				case "6":
-					db_lv = "user_simbol_6_lv";
-					db_cnt = "user_simbol_6_cnt";
-					db_text = "에스페라";
-					break;
-				default:
-					msg.reply("심볼 코드 입력 오류");
-			}
-			console.log(db_lv)
-			console.log(db_cnt)
-			console.log(db_text)
 			if(lv > 20){
 				msg.reply("심볼 레벨은 20이 최대입니다");
 			}
@@ -439,14 +399,77 @@ client.on('message', msg => {
 					})
 					.then((sc) => {
 						if(sc){
-							user.update({db_lv: lv, db_cnt: num}, {where: {user_name: name}})
-							.then(result => {
-								msg.reply(db_text + " 심볼 레벨 :" + lv + ", 성장치 : " + num + "로 설정 완료되었습니다.");
-							})
-							.catch(err => {
-								console.error(err);
-								msg.reply("데이터 수정에 실패했어요");
-							});
+							let db_text;
+							switch (code) {
+								case "1":
+									db_text = "소멸의 여로";
+									user.update({user_simbol_1_lv: lv, user_simbol_1_cnt: num}, {where: {user_name: name}})
+									.then(result => {
+										msg.reply(db_text + " 심볼 레벨 :" + lv + ", 성장치 : " + num + "로 설정 완료되었습니다.");
+									})
+									.catch(err => {
+										console.error(err);
+										msg.reply("데이터 수정에 실패했어요");
+									});
+									break;
+								case "2":
+									db_text = "츄츄 아일랜드";
+									user.update({user_simbol_2_lv: lv, user_simbol_2_cnt: num}, {where: {user_name: name}})
+									.then(result => {
+										msg.reply(db_text + " 심볼 레벨 :" + lv + ", 성장치 : " + num + "로 설정 완료되었습니다.");
+									})
+									.catch(err => {
+										console.error(err);
+										msg.reply("데이터 수정에 실패했어요");
+									});
+									break;
+								case "3":
+									db_text = "레헬른";
+									user.update({user_simbol_3_lv: lv, user_simbol_3_cnt: num}, {where: {user_name: name}})
+									.then(result => {
+										msg.reply(db_text + " 심볼 레벨 :" + lv + ", 성장치 : " + num + "로 설정 완료되었습니다.");
+									})
+									.catch(err => {
+										console.error(err);
+										msg.reply("데이터 수정에 실패했어요");
+									});
+									break;
+								case "4":
+									db_text = "아르카나";
+									user.update({user_simbol_4_lv: lv, user_simbol_4_cnt: num}, {where: {user_name: name}})
+									.then(result => {
+										msg.reply(db_text + " 심볼 레벨 :" + lv + ", 성장치 : " + num + "로 설정 완료되었습니다.");
+									})
+									.catch(err => {
+										console.error(err);
+										msg.reply("데이터 수정에 실패했어요");
+									});
+									break;
+								case "5":
+									db_text = "모라스";
+									user.update({user_simbol_5_lv: lv, user_simbol_5_cnt: num}, {where: {user_name: name}})
+									.then(result => {
+										msg.reply(db_text + " 심볼 레벨 :" + lv + ", 성장치 : " + num + "로 설정 완료되었습니다.");
+									})
+									.catch(err => {
+										console.error(err);
+										msg.reply("데이터 수정에 실패했어요");
+									});
+									break;
+								case "6":
+									db_text = "에스페라";
+									user.update({user_simbol_6_lv: lv, user_simbol_6_cnt: num}, {where: {user_name: name}})
+									.then(result => {
+										msg.reply(db_text + " 심볼 레벨 :" + lv + ", 성장치 : " + num + "로 설정 완료되었습니다.");
+									})
+									.catch(err => {
+										console.error(err);
+										msg.reply("데이터 수정에 실패했어요");
+									});
+									break;
+								default:
+									msg.reply("심볼 코드 입력 오류");
+							}
 						}
 						else {
 							msg.reply("일치하는 계정이 없습니다. 계정 이름을 확인해주세요.");
