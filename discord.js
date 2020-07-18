@@ -340,34 +340,29 @@ client.on('message', msg => {
 				if(sc){
 					let lv;
 					let cnt;
-					
+					let text;
+					lv = eval("sc.user_simbol_" + code + "_lv");
+					cnt = eval("sc.user_simbol_" + code + "_cnt") + Number(num);
+					//switch문 나중에 다른 db 생성과 함께 지울 예정
 					switch(code){
 						case "1" :
-							lv = sc.user_simbol_1_lv;
-							cnt = sc.user_simbol_1_cnt + Number(num);
+							text = "소멸의 여로";
 							break;
 						case "2" :
-							lv = sc.user_simbol_2_lv;
-							cnt = sc.user_simbol_2_cnt + Number(num);
-							break;			
+							text = "츄츄 아일랜드";
+							break;
 						case "3" :
-							lv = sc.user_simbol_3_lv;
-							cnt = sc.user_simbol_3_cnt + Number(num);
+							text = "레헬른";
 							break;
 						case "4" :
-							lv = sc.user_simbol_4_lv;
-							cnt = sc.user_simbol_4_cnt + Number(num);
-							break;	
+							text = "아르카나";
+							break;
 						case "5" :
-							lv = sc.user_simbol_5_lv;
-							cnt = sc.user_simbol_5_cnt + Number(num);
-							break;		
+							text = "모라스";
+							break;
 						case "6" :
-							lv = sc.user_simbol_6_lv;
-							cnt = sc.user_simbol_6_cnt + Number(num);
-							break;		
-						default : 
-							msg.reply("올바른 코드를 입력해주세요");
+							text = "에스페라";
+							break;							
 					}
 					let max_cnt = lv * lv + 11;
 					while(true){
@@ -447,7 +442,7 @@ client.on('message', msg => {
 							break;	
 						default : 
 							msg.reply("데이터 업로드 실패");
-					}									
+					}			
 				}
 				else {
 					msg.reply("일치하는 계정이 없습니다. 계정 이름을 확인해주세요.");
