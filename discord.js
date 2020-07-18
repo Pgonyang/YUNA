@@ -338,8 +338,37 @@ client.on('message', msg => {
 			})
 			.then((sc) => {
 				if(sc){
-					let lv = sc.user_simbol_1_lv;
-					let cnt = sc.user_simbol_1_cnt + Number(num);
+					let lv;
+					let cnt;
+					
+					switch(code){
+						case "1" :
+							lv = sc.user_simbol_1_lv;
+							cnt = sc.user_simbol_1_cnt + Number(num);
+							break;
+						case "2" :
+							lv = sc.user_simbol_2_lv;
+							cnt = sc.user_simbol_2_cnt + Number(num);
+							break;			
+						case "3" :
+							lv = sc.user_simbol_3_lv;
+							cnt = sc.user_simbol_3_cnt + Number(num);
+							break;
+						case "4" :
+							lv = sc.user_simbol_4_lv;
+							cnt = sc.user_simbol_4_cnt + Number(num);
+							break;	
+						case "5" :
+							lv = sc.user_simbol_5_lv;
+							cnt = sc.user_simbol_5_cnt + Number(num);
+							break;		
+						case "6" :
+							lv = sc.user_simbol_6_lv;
+							cnt = sc.user_simbol_6_cnt + Number(num);
+							break;		
+						default : 
+							msg.reply("올바른 코드를 입력해주세요");
+					}
 					let max_cnt = lv * lv + 11;
 					while(true){
 						if(cnt >= max_cnt){
@@ -355,14 +384,70 @@ client.on('message', msg => {
 					for(var i=lv; i<20; i++){
 						to_max = to_max + (i*i+11)
 					}
-					user.update({user_simbol_1_lv: lv, user_simbol_1_cnt: cnt}, {where: {user_name: name}})
-					.then(result => {
-						msg.reply("소멸의 여로 심볼 레벨 :" + lv + ", 성장치 : " + cnt + "/" + max_cnt + "\n(만렙까지 앞으로 심볼 " + (to_max-cnt) + "개!)");
-					})
-					.catch(err => {
-						console.error(err);
-						msg.reply("데이터 수정에 실패했어요");
-					});
+					switch(code){
+						case "1" :
+							user.update({user_simbol_1_lv: lv, user_simbol_1_cnt: cnt}, {where: {user_name: name}})
+							.then(result => {
+								msg.reply("소멸의 여로 심볼 레벨 :" + lv + ", 성장치 : " + cnt + "/" + max_cnt + "\n(만렙까지 앞으로 심볼 " + (to_max-cnt) + "개!)");
+							})
+							.catch(err => {
+								console.error(err);
+								msg.reply("데이터 수정에 실패했어요");
+							});
+							break;
+						case "2" :
+							user.update({user_simbol_2_lv: lv, user_simbol_2_cnt: cnt}, {where: {user_name: name}})
+							.then(result => {
+								msg.reply("츄츄 아일랜드 심볼 레벨 :" + lv + ", 성장치 : " + cnt + "/" + max_cnt + "\n(만렙까지 앞으로 심볼 " + (to_max-cnt) + "개!)");
+							})
+							.catch(err => {
+								console.error(err);
+								msg.reply("데이터 수정에 실패했어요");
+							});
+							break;		
+						case "3" :
+							user.update({user_simbol_3_lv: lv, user_simbol_3_cnt: cnt}, {where: {user_name: name}})
+							.then(result => {
+								msg.reply("레헬른 심볼 레벨 :" + lv + ", 성장치 : " + cnt + "/" + max_cnt + "\n(만렙까지 앞으로 심볼 " + (to_max-cnt) + "개!)");
+							})
+							.catch(err => {
+								console.error(err);
+								msg.reply("데이터 수정에 실패했어요");
+							});
+							break;
+						case "4" :
+							user.update({user_simbol_4_lv: lv, user_simbol_4_cnt: cnt}, {where: {user_name: name}})
+							.then(result => {
+								msg.reply("아르카나 심볼 레벨 :" + lv + ", 성장치 : " + cnt + "/" + max_cnt + "\n(만렙까지 앞으로 심볼 " + (to_max-cnt) + "개!)");
+							})
+							.catch(err => {
+								console.error(err);
+								msg.reply("데이터 수정에 실패했어요");
+							});
+							break;
+						case "5" :
+							user.update({user_simbol_5_lv: lv, user_simbol_5_cnt: cnt}, {where: {user_name: name}})
+							.then(result => {
+								msg.reply("모라스 심볼 레벨 :" + lv + ", 성장치 : " + cnt + "/" + max_cnt + "\n(만렙까지 앞으로 심볼 " + (to_max-cnt) + "개!)");
+							})
+							.catch(err => {
+								console.error(err);
+								msg.reply("데이터 수정에 실패했어요");
+							});
+							break;	
+						case "6" :
+							user.update({user_simbol_6_lv: lv, user_simbol_6_cnt: cnt}, {where: {user_name: name}})
+							.then(result => {
+								msg.reply("에스페라 심볼 레벨 :" + lv + ", 성장치 : " + cnt + "/" + max_cnt + "\n(만렙까지 앞으로 심볼 " + (to_max-cnt) + "개!)");
+							})
+							.catch(err => {
+								console.error(err);
+								msg.reply("데이터 수정에 실패했어요");
+							});
+							break;	
+						default : 
+							msg.reply("데이터 업로드 실패");
+					}									
 				}
 				else {
 					msg.reply("일치하는 계정이 없습니다. 계정 이름을 확인해주세요.");
