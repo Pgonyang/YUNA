@@ -252,6 +252,43 @@ client.on('message', msg => {
 			}
 		});		
 	}
+	if (msg.content.slice(0, 4) == "!보스 ") {
+		boss.findAll({
+			where: {
+				boss_name: msg.content.slice(4).trim()
+			},
+			raw: true, //dataValues만 사용
+			order: [['boss_diff', 'ASC']] //정렬
+		})
+		.then((bs) => {
+			var i = 0;
+			var text = "\n";
+			const boss_embed = new Discord.MessageEmbed().setTitle("주간 보스표")
+			.setColor('#0099ff')
+			while(true){
+				if(bs[i]){
+					if(bs[i].boss_diff == 1){
+						diff = "이지"
+					}
+					else if(bs[i].boss_diff == 2){
+						diff = "노말"
+					}
+					else if(bs[i].boss_diff == 3){
+						diff = "카오스"
+					}
+					else if(bs[i].boss_diff == 4){
+						diff = "하드"
+					}
+					boss_embed.addField(bs[i].boss_name + " (" + diff + ")", bs[i].boss_money + "메소", true)
+				}
+				else {
+					msg.reply(boss_embed);	
+					break
+				}
+				i++
+			}
+		});		
+	}
 	//db 생성
 	else if (msg.content.slice(0, 6) == "!계정생성 ") {
 		user.findOne({
