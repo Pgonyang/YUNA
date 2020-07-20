@@ -117,6 +117,41 @@ const user = sequelize.define('user', {
 		type: Sequelize.INTEGER,
 		allowNull: false,
 		defaultValue: 8
+	},
+	user_mon: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		defaultValue: 0
+	},
+	user_tue: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		defaultValue: 0
+	},
+	user_wed: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		defaultValue: 0
+	},
+	user_thu: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		defaultValue: 0
+	},
+	user_fri: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		defaultValue: 0
+	},
+	user_sat: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		defaultValue: 0
+	},
+	user_sun: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		defaultValue: 0
 	}
 }, {
     classMethods: {},
@@ -642,6 +677,105 @@ client.on('message', msg => {
 					})	
 				}
 			}	
+		} catch(error) {
+			msg.reply("심볼 수정 형식: !심볼설정 닉네임,심볼,심볼 레벨,심볼 성장치");
+		}
+	}
+	else if (msg.content.slice(0, 6) == "!칠요설정 ") {
+		try{
+			const string = msg.content.slice(6).split(',');
+			var name = string[0].trim();
+			var code = string[1].trim();
+			var num = string[2].trim();
+			if(num > 77){
+				num = 77;
+			}
+			user.findOne({
+				where: {
+					user_name: name
+				}
+			})
+			.then((sc) => {
+				if(sc){
+					switch (code) {
+						case "월":
+							user.update({user_mon: num}, {where: {user_name: name}})
+							.then(result => {
+								msg.reply("월요일 몬스터 파크 진행 상황 [" + num + "/77]");
+							})
+							.catch(err => {
+								console.error(err);
+								msg.reply("데이터 수정에 실패했어요");
+							});
+							break;
+						case "화":		
+							user.update({user_tue: num}, {where: {user_name: name}})
+							.then(result => {
+								msg.reply("화요일 몬스터 파크 진행 상황 [" + num + "/77]");
+							})
+							.catch(err => {
+								console.error(err);
+								msg.reply("데이터 수정에 실패했어요");
+							});
+							break;
+						case "수":						
+							user.update({user_wed: num}, {where: {user_name: name}})
+							.then(result => {
+								msg.reply("수요일 몬스터 파크 진행 상황 [" + num + "/77]");
+							})
+							.catch(err => {
+								console.error(err);
+								msg.reply("데이터 수정에 실패했어요");
+							});
+							break;
+						case "목":		
+							user.update({user_thu: num}, {where: {user_name: name}})
+							.then(result => {
+								msg.reply("목요일 몬스터 파크 진행 상황 [" + num + "/77]");
+							})
+							.catch(err => {
+								console.error(err);
+								msg.reply("데이터 수정에 실패했어요");
+							});
+							break;
+						case "금":	
+							user.update({user_fri: num}, {where: {user_name: name}})
+							.then(result => {
+								msg.reply("금요일 몬스터 파크 진행 상황 [" + num + "/77]");
+							})
+							.catch(err => {
+								console.error(err);
+								msg.reply("데이터 수정에 실패했어요");
+							});
+							break;
+						case "토":	
+							user.update({user_sat: num}, {where: {user_name: name}})
+							.then(result => {
+								msg.reply("토요일 몬스터 파크 진행 상황 [" + num + "/77]");
+							})
+							.catch(err => {
+								console.error(err);
+								msg.reply("데이터 수정에 실패했어요");
+							});
+							break;
+						case "일":		
+							user.update({user_sun: num}, {where: {user_name: name}})
+							.then(result => {
+								msg.reply("일요일 몬스터 파크 진행 상황 [" + num + "/77]");
+							})
+							.catch(err => {
+								console.error(err);
+								msg.reply("데이터 수정에 실패했어요");
+							});
+							break;
+						default:
+							msg.reply("심볼 코드 입력 오류");
+					}
+				}
+				else {
+					msg.reply("일치하는 계정이 없습니다. 계정 이름을 확인해주세요.");
+				}
+			})	
 		} catch(error) {
 			msg.reply("심볼 수정 형식: !심볼설정 닉네임,심볼,심볼 레벨,심볼 성장치");
 		}
