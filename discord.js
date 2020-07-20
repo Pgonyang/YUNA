@@ -397,7 +397,12 @@ client.on('message', msg => {
 			const string = msg.content.slice(4).split(',');
 			var name = string[0].trim();
 			var code = string[1].trim();
-			var num = string[2].trim();
+			try {
+				var num = string[2].trim();
+			}
+			catch (error) {
+				var num = "none"
+			}
 			user.findOne({
 				where: {
 					user_name: name
@@ -408,7 +413,11 @@ client.on('message', msg => {
 					let lv;
 					let cnt;
 					let text;
+					let to_date;
 					lv = eval("sc.user_simbol_" + code + "_lv");
+					if(num == "none"){
+						num = eval("sc.user_simbol_" + code + "_default")
+					}	
 					cnt = eval("sc.user_simbol_" + code + "_cnt") + Number(num);
 					//switch문 나중에 다른 db 생성과 함께 지울 예정
 					switch(code){
@@ -418,16 +427,16 @@ client.on('message', msg => {
 						case "2" :
 							text = "츄츄 아일랜드";
 							break;
-						case "3" :
+						case "3" :					
 							text = "레헬른";
 							break;
-						case "4" :
+						case "4" :					
 							text = "아르카나";
 							break;
-						case "5" :
+						case "5" :					
 							text = "모라스";
 							break;
-						case "6" :
+						case "6" :					
 							text = "에스페라";
 							break;							
 					}
@@ -446,11 +455,12 @@ client.on('message', msg => {
 					for(var i=lv; i<20; i++){
 						to_max = to_max + (i*i+11)
 					}
+					to_date = Math.ceil((to_max-cnt)/(eval("sc.user_simbol_" + code + "_default")))
 					switch(code){
 						case "1" :
 							user.update({user_simbol_1_lv: lv, user_simbol_1_cnt: cnt}, {where: {user_name: name}})
 							.then(result => {
-								msg.reply("소멸의 여로 심볼 레벨 :" + lv + ", 성장치 : " + cnt + "/" + max_cnt + "\n(만렙까지 앞으로 심볼 " + (to_max-cnt) + "개!)");
+								msg.reply("소멸의 여로 심볼 레벨 :" + lv + ", 성장치 : " + cnt + "/" + max_cnt + "\n(만렙까지 앞으로 심볼 " + (to_max-cnt) + "개, " + to_date + "일)");
 							})
 							.catch(err => {
 								console.error(err);
@@ -460,7 +470,7 @@ client.on('message', msg => {
 						case "2" :
 							user.update({user_simbol_2_lv: lv, user_simbol_2_cnt: cnt}, {where: {user_name: name}})
 							.then(result => {
-								msg.reply("츄츄 아일랜드 심볼 레벨 :" + lv + ", 성장치 : " + cnt + "/" + max_cnt + "\n(만렙까지 앞으로 심볼 " + (to_max-cnt) + "개!)");
+								msg.reply("츄츄 아일랜드 심볼 레벨 :" + lv + ", 성장치 : " + cnt + "/" + max_cnt + "\n(만렙까지 앞으로 심볼 " + (to_max-cnt) + "개, " + to_date + "일)");
 							})
 							.catch(err => {
 								console.error(err);
@@ -470,7 +480,7 @@ client.on('message', msg => {
 						case "3" :
 							user.update({user_simbol_3_lv: lv, user_simbol_3_cnt: cnt}, {where: {user_name: name}})
 							.then(result => {
-								msg.reply("레헬른 심볼 레벨 :" + lv + ", 성장치 : " + cnt + "/" + max_cnt + "\n(만렙까지 앞으로 심볼 " + (to_max-cnt) + "개!)");
+								msg.reply("레헬른 심볼 레벨 :" + lv + ", 성장치 : " + cnt + "/" + max_cnt + "\n(만렙까지 앞으로 심볼 " + (to_max-cnt) + "개, " + to_date + "일)");
 							})
 							.catch(err => {
 								console.error(err);
@@ -480,7 +490,7 @@ client.on('message', msg => {
 						case "4" :
 							user.update({user_simbol_4_lv: lv, user_simbol_4_cnt: cnt}, {where: {user_name: name}})
 							.then(result => {
-								msg.reply("아르카나 심볼 레벨 :" + lv + ", 성장치 : " + cnt + "/" + max_cnt + "\n(만렙까지 앞으로 심볼 " + (to_max-cnt) + "개!)");
+								msg.reply("아르카나 심볼 레벨 :" + lv + ", 성장치 : " + cnt + "/" + max_cnt + "\n(만렙까지 앞으로 심볼 " + (to_max-cnt) + "개, " + to_date + "일)");
 							})
 							.catch(err => {
 								console.error(err);
@@ -490,7 +500,7 @@ client.on('message', msg => {
 						case "5" :
 							user.update({user_simbol_5_lv: lv, user_simbol_5_cnt: cnt}, {where: {user_name: name}})
 							.then(result => {
-								msg.reply("모라스 심볼 레벨 :" + lv + ", 성장치 : " + cnt + "/" + max_cnt + "\n(만렙까지 앞으로 심볼 " + (to_max-cnt) + "개!)");
+								msg.reply("모라스 심볼 레벨 :" + lv + ", 성장치 : " + cnt + "/" + max_cnt + "\n(만렙까지 앞으로 심볼 " + (to_max-cnt) + "개, " + to_date + "일)");
 							})
 							.catch(err => {
 								console.error(err);
@@ -500,7 +510,7 @@ client.on('message', msg => {
 						case "6" :
 							user.update({user_simbol_6_lv: lv, user_simbol_6_cnt: cnt}, {where: {user_name: name}})
 							.then(result => {
-								msg.reply("에스페라 심볼 레벨 :" + lv + ", 성장치 : " + cnt + "/" + max_cnt + "\n(만렙까지 앞으로 심볼 " + (to_max-cnt) + "개!)");
+								msg.reply("에스페라 심볼 레벨 :" + lv + ", 성장치 : " + cnt + "/" + max_cnt + "\n(만렙까지 앞으로 심볼 " + (to_max-cnt) + "개, " + to_date + "일)");
 							})
 							.catch(err => {
 								console.error(err);
@@ -551,12 +561,12 @@ client.on('message', msg => {
 					})
 					.then((sc) => {
 						if(sc){
+							if(def == "none"){
+								def = eval("sc.user_simbol_" + code + "_default")
+							}	
 							let db_text;
 							switch (code) {
 								case "1":
-									if(def == "none"){
-										def = sc.user_simbol_1_default;
-									}
 									db_text = "소멸의 여로";
 									user.update({user_simbol_1_lv: lv, user_simbol_1_cnt: num, user_simbol_1_default: def}, {where: {user_name: name}})
 									.then(result => {
@@ -567,10 +577,7 @@ client.on('message', msg => {
 										msg.reply("데이터 수정에 실패했어요");
 									});
 									break;
-								case "2":
-									if(def == "none"){
-										def = sc.user_simbol_2_default;
-									}								
+								case "2":							
 									db_text = "츄츄 아일랜드";
 									user.update({user_simbol_2_lv: lv, user_simbol_2_cnt: num, user_simbol_2_default: def}, {where: {user_name: name}})
 									.then(result => {
@@ -581,10 +588,7 @@ client.on('message', msg => {
 										msg.reply("데이터 수정에 실패했어요");
 									});
 									break;
-								case "3":
-									if(def == "none"){
-										def = sc.user_simbol_3_default;
-									}								
+								case "3":								
 									db_text = "레헬른";
 									user.update({user_simbol_3_lv: lv, user_simbol_3_cnt: num, user_simbol_3_default: def}, {where: {user_name: name}})
 									.then(result => {
@@ -595,10 +599,7 @@ client.on('message', msg => {
 										msg.reply("데이터 수정에 실패했어요");
 									});
 									break;
-								case "4":
-									if(def == "none"){
-										def = sc.user_simbol_4_default;
-									}								
+								case "4":								
 									db_text = "아르카나";
 									user.update({user_simbol_4_lv: lv, user_simbol_4_cnt: num, user_simbol_4_default: def}, {where: {user_name: name}})
 									.then(result => {
@@ -609,10 +610,7 @@ client.on('message', msg => {
 										msg.reply("데이터 수정에 실패했어요");
 									});
 									break;
-								case "5":
-									if(def == "none"){
-										def = sc.user_simbol_5_default;
-									}								
+								case "5":							
 									db_text = "모라스";
 									user.update({user_simbol_5_lv: lv, user_simbol_5_cnt: num, user_simbol_5_default: def}, {where: {user_name: name}})
 									.then(result => {
@@ -623,10 +621,7 @@ client.on('message', msg => {
 										msg.reply("데이터 수정에 실패했어요");
 									});
 									break;
-								case "6":
-									if(def == "none"){
-										def = sc.user_simbol_6_default;
-									}								
+								case "6":							
 									db_text = "에스페라";
 									user.update({user_simbol_6_lv: lv, user_simbol_6_cnt: num, user_simbol_6_default: def}, {where: {user_name: name}})
 									.then(result => {
