@@ -31,12 +31,17 @@ const user = sequelize.define('user', {
 	user_simbol_1_lv: {
 		type: Sequelize.INTEGER,
 		allowNull: false,
-		defaultValue: '1'
+		defaultValue: 1
 	},
 	user_simbol_1_cnt: {
 		type: Sequelize.INTEGER,
 		allowNull: false,
 		defaultValue: 1
+	},
+	user_simbol_1_default: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		defaultValue: 14
 	},
 	user_simbol_2_lv: {
 		type: Sequelize.INTEGER,
@@ -48,6 +53,11 @@ const user = sequelize.define('user', {
 		allowNull: false,
 		defaultValue: 1
 	},
+	user_simbol_2_default: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		defaultValue: 15
+	},
 	user_simbol_3_lv: {
 		type: Sequelize.INTEGER,
 		allowNull: false,
@@ -57,6 +67,11 @@ const user = sequelize.define('user', {
 		type: Sequelize.INTEGER,
 		allowNull: false,
 		defaultValue: 1
+	},
+	user_simbol_3_default: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		defaultValue: 10
 	},
 	user_simbol_4_lv: {
 		type: Sequelize.INTEGER,
@@ -68,6 +83,11 @@ const user = sequelize.define('user', {
 		allowNull: false,
 		defaultValue: 1
 	},
+	user_simbol_4_default: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		defaultValue: 10
+	},
 	user_simbol_5_lv: {
 		type: Sequelize.INTEGER,
 		allowNull: false,
@@ -78,6 +98,11 @@ const user = sequelize.define('user', {
 		allowNull: false,
 		defaultValue: 1
 	},
+	user_simbol_5_default: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		defaultValue: 8
+	},
 	user_simbol_6_lv: {
 		type: Sequelize.INTEGER,
 		allowNull: false,
@@ -87,6 +112,11 @@ const user = sequelize.define('user', {
 		type: Sequelize.INTEGER,
 		allowNull: false,
 		defaultValue: 1
+	},
+	user_simbol_6_default: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		defaultValue: 8
 	}
 }, {
     classMethods: {},
@@ -494,9 +524,14 @@ client.on('message', msg => {
 			const string = msg.content.slice(6).split(',');
 			var name = string[0].trim();
 			var code = string[1].trim();
-			console.log(code)
 			var lv = string[2].trim();
 			var num = string[3].trim();
+			try {
+				var def = string[4].trim();
+			}
+			catch (error) {
+				var def = "none";
+			}
 			if(lv > 20){
 				msg.reply("심볼 레벨은 20이 최대입니다");
 			}
@@ -519,10 +554,13 @@ client.on('message', msg => {
 							let db_text;
 							switch (code) {
 								case "1":
+									if(def == "none"){
+										def = sc.user_simbol_1_default;
+									}
 									db_text = "소멸의 여로";
-									user.update({user_simbol_1_lv: lv, user_simbol_1_cnt: num}, {where: {user_name: name}})
+									user.update({user_simbol_1_lv: lv, user_simbol_1_cnt: num, user_simbol_1_default: def}, {where: {user_name: name}})
 									.then(result => {
-										msg.reply(db_text + " 심볼 레벨 :" + lv + ", 성장치 : " + num + "로 설정 완료되었습니다.");
+										msg.reply(db_text + " 심볼 레벨 :" + lv + ", 성장치 : " + num + " 일일 기본 획득량 : " + def + " 로 설정 완료되었습니다.");
 									})
 									.catch(err => {
 										console.error(err);
@@ -530,10 +568,13 @@ client.on('message', msg => {
 									});
 									break;
 								case "2":
+									if(def == "none"){
+										def = sc.user_simbol_2_default;
+									}								
 									db_text = "츄츄 아일랜드";
-									user.update({user_simbol_2_lv: lv, user_simbol_2_cnt: num}, {where: {user_name: name}})
+									user.update({user_simbol_2_lv: lv, user_simbol_2_cnt: num, user_simbol_2_default: def}, {where: {user_name: name}})
 									.then(result => {
-										msg.reply(db_text + " 심볼 레벨 :" + lv + ", 성장치 : " + num + "로 설정 완료되었습니다.");
+										msg.reply(db_text + " 심볼 레벨 :" + lv + ", 성장치 : " + num + " 일일 기본 획득량 : " + def + " 로 설정 완료되었습니다.");
 									})
 									.catch(err => {
 										console.error(err);
@@ -541,10 +582,13 @@ client.on('message', msg => {
 									});
 									break;
 								case "3":
+									if(def == "none"){
+										def = sc.user_simbol_3_default;
+									}								
 									db_text = "레헬른";
-									user.update({user_simbol_3_lv: lv, user_simbol_3_cnt: num}, {where: {user_name: name}})
+									user.update({user_simbol_3_lv: lv, user_simbol_3_cnt: num, user_simbol_3_default: def}, {where: {user_name: name}})
 									.then(result => {
-										msg.reply(db_text + " 심볼 레벨 :" + lv + ", 성장치 : " + num + "로 설정 완료되었습니다.");
+										msg.reply(db_text + " 심볼 레벨 :" + lv + ", 성장치 : " + num + " 일일 기본 획득량 : " + def + " 로 설정 완료되었습니다.");
 									})
 									.catch(err => {
 										console.error(err);
@@ -552,10 +596,13 @@ client.on('message', msg => {
 									});
 									break;
 								case "4":
+									if(def == "none"){
+										def = sc.user_simbol_4_default;
+									}								
 									db_text = "아르카나";
-									user.update({user_simbol_4_lv: lv, user_simbol_4_cnt: num}, {where: {user_name: name}})
+									user.update({user_simbol_4_lv: lv, user_simbol_4_cnt: num, user_simbol_4_default: def}, {where: {user_name: name}})
 									.then(result => {
-										msg.reply(db_text + " 심볼 레벨 :" + lv + ", 성장치 : " + num + "로 설정 완료되었습니다.");
+										msg.reply(db_text + " 심볼 레벨 :" + lv + ", 성장치 : " + num + " 일일 기본 획득량 : " + def + " 로 설정 완료되었습니다.");
 									})
 									.catch(err => {
 										console.error(err);
@@ -563,10 +610,13 @@ client.on('message', msg => {
 									});
 									break;
 								case "5":
+									if(def == "none"){
+										def = sc.user_simbol_5_default;
+									}								
 									db_text = "모라스";
-									user.update({user_simbol_5_lv: lv, user_simbol_5_cnt: num}, {where: {user_name: name}})
+									user.update({user_simbol_5_lv: lv, user_simbol_5_cnt: num, user_simbol_5_default: def}, {where: {user_name: name}})
 									.then(result => {
-										msg.reply(db_text + " 심볼 레벨 :" + lv + ", 성장치 : " + num + "로 설정 완료되었습니다.");
+										msg.reply(db_text + " 심볼 레벨 :" + lv + ", 성장치 : " + num + " 일일 기본 획득량 : " + def + " 로 설정 완료되었습니다.");
 									})
 									.catch(err => {
 										console.error(err);
@@ -574,10 +624,13 @@ client.on('message', msg => {
 									});
 									break;
 								case "6":
+									if(def == "none"){
+										def = sc.user_simbol_6_default;
+									}								
 									db_text = "에스페라";
-									user.update({user_simbol_6_lv: lv, user_simbol_6_cnt: num}, {where: {user_name: name}})
+									user.update({user_simbol_6_lv: lv, user_simbol_6_cnt: num, user_simbol_6_default: def}, {where: {user_name: name}})
 									.then(result => {
-										msg.reply(db_text + " 심볼 레벨 :" + lv + ", 성장치 : " + num + "로 설정 완료되었습니다.");
+										msg.reply(db_text + " 심볼 레벨 :" + lv + ", 성장치 : " + num + " 일일 기본 획득량 : " + def + " 로 설정 완료되었습니다.");
 									})
 									.catch(err => {
 										console.error(err);
