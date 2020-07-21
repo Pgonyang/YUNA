@@ -780,6 +780,133 @@ client.on('message', msg => {
 			msg.reply("심볼 수정 형식: !심볼설정 닉네임,심볼,심볼 레벨,심볼 성장치");
 		}
 	}
+	else if (msg.content.slice(0, 4) == "!칠요 ") {
+		try{
+			const string = msg.content.slice(4).split(',');
+			var name = string[0].trim();
+			var code = string[1].trim();
+			try {
+				var num = string[2].trim();
+			}
+			catch (error) {
+				var num = 2
+			}
+			user.findOne({
+				where: {
+					user_name: name
+				}
+			})
+			.then((sc) => {
+				if(sc){
+					let cnt;
+					let to_date;
+					switch (code) {
+						case "월" :
+							cnt = Number(sc.user_mon);
+							break;
+						case "화" :
+							cnt = Number(sc.user_tue);
+							break;
+						case "수" :
+							cnt = Number(sc.user_wed);
+							break;
+						case "목" :
+							cnt = Number(sc.user_thu);
+							break;
+						case "금" :
+							cnt = Number(sc.user_fri);
+							break;
+						case "토" :
+							cnt = Number(sc.user_sat);
+							break;
+						case "일" :
+							cnt = Number(sc.user_sun);
+							break;
+					}
+					to_date = Math.ceil((77-(cnt+num))/2)
+					switch(code){
+						case "월" :
+							user.update({user_mon: (cnt+num)}, {where: {user_name: name}})
+							.then(result => {
+								msg.reply("월요일 몬스터 파크 진행 상황 [" + (cnt+num) + "/77]\n완료까지 " + to_date + "주");
+							})
+							.catch(err => {
+								console.error(err);
+								msg.reply("데이터 수정에 실패했어요");
+							});
+							break;
+						case "화" :
+							user.update({user_tue: (cnt+num)}, {where: {user_name: name}})
+							.then(result => {
+								msg.reply("화요일 몬스터 파크 진행 상황 [" + (cnt+num) + "/77]\n완료까지 " + to_date + "주");
+							})
+							.catch(err => {
+								console.error(err);
+								msg.reply("데이터 수정에 실패했어요");
+							});
+							break;	
+						case "수" :
+							user.update({user_wed: (cnt+num)}, {where: {user_name: name}})
+							.then(result => {
+								msg.reply("수요일 몬스터 파크 진행 상황 [" + (cnt+num) + "/77]\n완료까지 " + to_date + "주");
+							})
+							.catch(err => {
+								console.error(err);
+								msg.reply("데이터 수정에 실패했어요");
+							});
+							break;
+						case "목" :
+							user.update({user_thu: (cnt+num)}, {where: {user_name: name}})
+							.then(result => {
+								msg.reply("목요일 몬스터 파크 진행 상황 [" + (cnt+num) + "/77]\n완료까지 " + to_date + "주");
+							})
+							.catch(err => {
+								console.error(err);
+								msg.reply("데이터 수정에 실패했어요");
+							});
+							break;
+						case "금" :
+							user.update({user_fri: (cnt+num)}, {where: {user_name: name}})
+							.then(result => {
+								msg.reply("금요일 몬스터 파크 진행 상황 [" + (cnt+num) + "/77]\n완료까지 " + to_date + "주");
+							})
+							.catch(err => {
+								console.error(err);
+								msg.reply("데이터 수정에 실패했어요");
+							});
+							break;
+						case "토" :
+							user.update({user_sat: (cnt+num)}, {where: {user_name: name}})
+							.then(result => {
+								msg.reply("토요일 몬스터 파크 진행 상황 [" + (cnt+num) + "/77]\n완료까지 " + to_date + "주");
+							})
+							.catch(err => {
+								console.error(err);
+								msg.reply("데이터 수정에 실패했어요");
+							});
+							break;	
+						case "일" :
+							user.update({user_sun: (cnt+num)}, {where: {user_name: name}})
+							.then(result => {
+								msg.reply("일요일 몬스터 파크 진행 상황 [" + (cnt+num) + "/77]\n완료까지 " + to_date + "주");
+							})
+							.catch(err => {
+								console.error(err);
+								msg.reply("데이터 수정에 실패했어요");
+							});
+							break;	
+						default : 
+							msg.reply("데이터 업로드 실패");
+					}			
+				}
+				else {
+					msg.reply("일치하는 계정이 없습니다. 계정 이름을 확인해주세요.");
+				}
+			})	
+		} catch(error) {
+			msg.reply("심볼 추가 형식: !심볼 닉네임,심볼위치,개수(비우면 일일 퀘스트 최대치)");
+		}
+	}
 	/*
 	else if (msg.content.slice(0, 4) == "!수정 ") {
 		tb.update({test_push: msg.content.slice(4)}, {where: {test_name: 'test_name'}})
