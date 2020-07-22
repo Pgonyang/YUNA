@@ -392,14 +392,15 @@ client.on('message', msg => {
 			}
 		})
 	}
-	else if (msg.content.slice(0, 4) == "!기록 ") {
+	else if (msg.content.slice(0, 4) == "!기록 ") 
 		try{
 			const string = msg.content.slice(4).split(',');
 			var name = string[0].trim();
 			var code = string[1].trim();
 			user.findOne({
 				where: {
-					user_name: name
+					user_name: name,
+					user_discord: msg.author.id
 				}
 			})
 			.then((sc) => {
@@ -440,7 +441,8 @@ client.on('message', msg => {
 			}
 			user.findOne({
 				where: {
-					user_name: name
+					user_name: name,
+					user_discord: msg.author.id
 				}
 			})
 			.then((sc) => {
@@ -591,7 +593,8 @@ client.on('message', msg => {
 				else {
 					user.findOne({
 						where: {
-							user_name: name
+							user_name: name,
+							user_discord: msg.author.id
 						}
 					})
 					.then((sc) => {
@@ -692,7 +695,8 @@ client.on('message', msg => {
 			}
 			user.findOne({
 				where: {
-					user_name: name
+					user_name: name,
+					user_discord: msg.author.id
 				}
 			})
 			.then((sc) => {
@@ -793,7 +797,8 @@ client.on('message', msg => {
 			}
 			user.findOne({
 				where: {
-					user_name: name
+					user_name: name,
+					user_discord: msg.author.id
 				}
 			})
 			.then((sc) => {
