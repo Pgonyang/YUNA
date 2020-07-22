@@ -392,7 +392,7 @@ client.on('message', msg => {
 			}
 		})
 	}
-	else if (msg.content.slice(0, 4) == "!기록 ") 
+	else if (msg.content.slice(0, 4) == "!기록 ") {
 		try{
 			const string = msg.content.slice(4).split(',');
 			var name = string[0].trim();
@@ -912,18 +912,23 @@ client.on('message', msg => {
 			msg.reply("심볼 추가 형식: !심볼 닉네임,심볼위치,개수(비우면 일일 퀘스트 최대치)");
 		}
 	}
-	/*
-	else if (msg.content.slice(0, 4) == "!수정 ") {
-		tb.update({test_push: msg.content.slice(4)}, {where: {test_name: 'test_name'}})
-		.then(result => {
-			msg.reply("데이터의 수정이 완료되었어요");
-		})
-		.catch(err => {
-			console.error(err);
-			msg.reply("오류가 발생했어요");
-		});
+	else if (msg.content.slice(0, 6) == "!칠요조회 ") {
+		user.findOne({
+				where: {
+					user_name: msg.content.slice(6),
+				}
+			})
+			.then((sc) => {
+				mon = sc.user_mon;
+				tue = sc.user_tue;
+				wed = sc.user_wed;
+				thu = sc.user_thu;
+				fri = sc.user_fri;
+ 				sat = sc.user_sat;
+				sun = sc.user_sun;
+				msg.reply("\n월요일 : [" + mon + "/77] " + Math.ceil((77-mon)/2) + "주\n화요일 : [" + tue + "/77] " + Math.ceil((77-tue)/2) + "주\n수요일 : [" + wed + "/77] " + Math.ceil((77-wed)/2) + "주\n목요일 : [" + thu + "/77] " + Math.ceil((77-thu)/2) + "주\n금요일 : [" + fri + "/77] " + Math.ceil((77-fri)/2) + "주\n토요일 : [" + sat + "/77] " + Math.ceil((77-sat)/2) + "주\n일요일 : [" + sun + "/77] " + Math.ceil((77-sun)/2) + "주");
+			})
 	}
-	*/
     //받은 메세지의 앞부분이 일치할 경우
     else if (msg.content.slice(0, 4) == "!정보 ") {
         //변수 선언 let은 var와 const 사이의 느낌
