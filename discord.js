@@ -790,7 +790,7 @@ client.on('message', msg => {
 			var name = string[0].trim();
 			var code = string[1].trim();
 			try {
-				var num = string[2].trim();
+				var num = Number(string[2].trim());
 			}
 			catch (error) {
 				var num = 2
@@ -909,7 +909,7 @@ client.on('message', msg => {
 				}
 			})	
 		} catch(error) {
-			msg.reply("심볼 추가 형식: !심볼 닉네임,심볼위치,개수(비우면 일일 퀘스트 최대치)");
+			msg.reply("칠요 기록 방식 : !칠요 닉네임,요일,횟수");
 		}
 	}
 	else if (msg.content.slice(0, 6) == "!칠요조회 ") {
