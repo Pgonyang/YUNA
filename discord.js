@@ -388,7 +388,7 @@ client.on('message', msg => {
 				});
 			}
 			else {
-				msg.reply("일치하는 닉네임이 없거나, discord id가 일치하지 않습니다.\n디스코드 계정을 변경한 경우, 동환#0506으로 문의해주세요.");
+				msg.reply("일치하는 닉네임이 없거나, discord id가 일치하지 않습니다.\n디스코드 계정을 변경한 경우, 샤로#0506으로 문의해주세요.");
 			}
 		})
 	}
@@ -788,7 +788,14 @@ client.on('message', msg => {
 		try{
 			const string = msg.content.slice(4).split(',');
 			var name = string[0].trim();
-			var code = string[1].trim();
+			try {
+				var code = string[1].trim();
+			}
+			catch (error) {
+				var d = new Date();
+				var week = new Array('일','월','화','수','목','금','토');
+				var code = week[d.getDay()];
+			}
 			try {
 				var num = Number(string[2].trim());
 			}
@@ -930,7 +937,7 @@ client.on('message', msg => {
 				const embed = new Discord.MessageEmbed().setTitle(msg.content.slice(6) + "님의 요일 훈장 현황")
 				.setColor('#0099ff')
 				for(var a = 0; a < 7; a++){
-					embed.addField(week[a] + "요일", eval("v_" + a) + "/77 ", false)
+					embed.addField(week[a] + "요일", eval("v_" + a) + "/77 , 완료까지 " + Math.ceil((77-eval("v_" + a))/2) + "주", false)
 				}
 				msg.reply(embed);
 				//msg.reply("\n월요일 : [" + mon + "/77] " + Math.ceil((77-mon)/2) + "주\n화요일 : [" + tue + "/77] " + Math.ceil((77-tue)/2) + "주\n수요일 : [" + wed + "/77] " + Math.ceil((77-wed)/2) + "주\n목요일 : [" + thu + "/77] " + Math.ceil((77-thu)/2) + "주\n금요일 : [" + fri + "/77] " + Math.ceil((77-fri)/2) + "주\n토요일 : [" + sat + "/77] " + Math.ceil((77-sat)/2) + "주\n일요일 : [" + sun + "/77] " + Math.ceil((77-sun)/2) + "주");
