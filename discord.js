@@ -288,8 +288,8 @@ client.on('message', msg => {
 		.then((bs) => {
 			var i = 0;
 			var text = "\n";
-			//const boss_embed = new Discord.MessageEmbed().setTitle("주간 보스표")
-			//.setColor('#0099ff') embed 테두리 색
+			const boss_embed = new Discord.MessageEmbed().setTitle("주간 보스표")
+			.setColor('#0099ff')
 			while(true){
 				if(bs[i]){
 					if(bs[i].boss_diff == 1){
@@ -304,13 +304,13 @@ client.on('message', msg => {
 					else if(bs[i].boss_diff == 4){
 						diff = "하드"
 					}
-					text = text + bs[i].boss_name + " (" + diff + ") " + pad(10,bs[i].boss_money) + "메소 \n" 
-					//boss_embed.addField(bs[i].boss_name + " (" + diff + ")", bs[i].boss_money + "메소", true) 최대길이 25라서 embed 사용 x
+					//text = text + bs[i].boss_name + " (" + diff + ") " + pad(10,bs[i].boss_money) + "메소 \n" 
+					boss_embed.addField(bs[i].boss_name + " (" + diff + ")", bs[i].boss_money + "메소", true)
 				}
 				else {
-					text = text + "(검은 마법사는 월간 보스)"
-					//msg.reply(boss_embed);	
-					msg.reply(text);
+					//text = text + "(검은 마법사는 월간 보스)"
+					msg.reply(boss_embed);	
+					//msg.reply(text);
 					break
 				}
 				i++
@@ -328,7 +328,7 @@ client.on('message', msg => {
 		.then((bs) => {
 			var i = 0;
 			var text = "\n";
-			const boss_embed = new Discord.MessageEmbed().setTitle("주간 보스표")
+			const boss_embed = new Discord.MessageEmbed().setTitle(msg.content.slice(4).trim() + "의 검색결과")
 			.setColor('#0099ff')
 			while(true){
 				if(bs[i]){
@@ -344,7 +344,7 @@ client.on('message', msg => {
 					else if(bs[i].boss_diff == 4){
 						diff = "하드"
 					}
-					boss_embed.addField(bs[i].boss_name + " (" + diff + ")", bs[i].boss_money + "메소", true)
+					boss_embed.addField(bs[i].boss_name + " (" + diff + ")", bs[i].boss_money + "메소", false)
 				}
 				else {
 					msg.reply(boss_embed);	
@@ -915,18 +915,25 @@ client.on('message', msg => {
 	else if (msg.content.slice(0, 6) == "!칠요조회 ") {
 		user.findOne({
 				where: {
-					user_name: msg.content.slice(6),
+					user_name: msg.content.slice(6)
 				}
 			})
 			.then((sc) => {
-				mon = sc.user_mon;
-				tue = sc.user_tue;
-				wed = sc.user_wed;
-				thu = sc.user_thu;
-				fri = sc.user_fri;
- 				sat = sc.user_sat;
-				sun = sc.user_sun;
-				msg.reply("\n월요일 : [" + mon + "/77] " + Math.ceil((77-mon)/2) + "주\n화요일 : [" + tue + "/77] " + Math.ceil((77-tue)/2) + "주\n수요일 : [" + wed + "/77] " + Math.ceil((77-wed)/2) + "주\n목요일 : [" + thu + "/77] " + Math.ceil((77-thu)/2) + "주\n금요일 : [" + fri + "/77] " + Math.ceil((77-fri)/2) + "주\n토요일 : [" + sat + "/77] " + Math.ceil((77-sat)/2) + "주\n일요일 : [" + sun + "/77] " + Math.ceil((77-sun)/2) + "주");
+				v_0 = sc.user_mon;
+				v_1 = sc.user_tue;
+				v_2 = sc.user_wed;
+				v_3 = sc.user_thu;
+				v_4 = sc.user_fri;
+ 				v_5 = sc.user_sat;
+				v_6 = sc.user_sun;
+				const week = new Array('월','화','수','목','금','토','일')
+				const embed = new Discord.MessageEmbed().setTitle(msg.content.slice(6) + "님의 요일 훈장 현황")
+				.setColor('#0099ff')
+				for(var a = 0; a < 7; a++){
+					embed.addField(week[a] + "요일", eval("v_" + a) + "/77 ", false)
+				}
+				msg.reply(embed);
+				//msg.reply("\n월요일 : [" + mon + "/77] " + Math.ceil((77-mon)/2) + "주\n화요일 : [" + tue + "/77] " + Math.ceil((77-tue)/2) + "주\n수요일 : [" + wed + "/77] " + Math.ceil((77-wed)/2) + "주\n목요일 : [" + thu + "/77] " + Math.ceil((77-thu)/2) + "주\n금요일 : [" + fri + "/77] " + Math.ceil((77-fri)/2) + "주\n토요일 : [" + sat + "/77] " + Math.ceil((77-sat)/2) + "주\n일요일 : [" + sun + "/77] " + Math.ceil((77-sun)/2) + "주");
 			})
 	}
     //받은 메세지의 앞부분이 일치할 경우
