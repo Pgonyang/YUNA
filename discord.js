@@ -926,18 +926,39 @@ client.on('message', msg => {
 				}
 			})
 			.then((sc) => {
-				v_0 = sc.user_mon;
-				v_1 = sc.user_tue;
-				v_2 = sc.user_wed;
-				v_3 = sc.user_thu;
-				v_4 = sc.user_fri;
- 				v_5 = sc.user_sat;
-				v_6 = sc.user_sun;
 				const week = new Array('월','화','수','목','금','토','일')
 				const embed = new Discord.MessageEmbed().setTitle(msg.content.slice(6) + "님의 요일 훈장 현황")
 				.setColor('#0099ff')
 				for(var a = 0; a < 7; a++){
 					embed.addField(week[a] + "요일", eval("v_" + a) + "/77 , 완료까지 " + Math.ceil((77-eval("v_" + a))/2) + "주", false)
+				}
+				msg.reply(embed);
+				//msg.reply("\n월요일 : [" + mon + "/77] " + Math.ceil((77-mon)/2) + "주\n화요일 : [" + tue + "/77] " + Math.ceil((77-tue)/2) + "주\n수요일 : [" + wed + "/77] " + Math.ceil((77-wed)/2) + "주\n목요일 : [" + thu + "/77] " + Math.ceil((77-thu)/2) + "주\n금요일 : [" + fri + "/77] " + Math.ceil((77-fri)/2) + "주\n토요일 : [" + sat + "/77] " + Math.ceil((77-sat)/2) + "주\n일요일 : [" + sun + "/77] " + Math.ceil((77-sun)/2) + "주");
+			})
+	}
+	else if (msg.content.slice(0, 6) == "!심볼조회 ") {
+		user.findOne({
+				where: {
+					user_name: msg.content.slice(6)
+				}
+			})
+			.then((sc) => {
+				//user_simbol_1_cnt
+				//user_simbol_1_default
+				const s_name = new Array('소멸의 여로','츄츄 아일랜드','레헬른','아르카나','모라스','에스페라')
+				const embed = new Discord.MessageEmbed().setTitle(msg.content.slice(6) + "님의 심볼 현황")
+				.setColor('#0099ff')
+				for(var a = 1; a < 7; a++){
+					let lv = eval("sc.user_simbol_" + a +"_lv")
+					let cnt = eval("sc.user_simbol_" + a +"_cnt")
+					let def = eval("sc.user_simbol_" + a + "_default")
+					let max_cnt = lv * lv + 11;
+					let to_max = 0;
+					for(var i=lv; i<20; i++){
+						to_max = to_max + (i*i+11)
+					}
+					let to_date = Math.ceil((to_max-cnt)/(def))
+					embed.addField(s_name[a-1] + " (하루 " + def + "개)", lv + "레벨 (" + cnt + "/" + max_cnt + ") 만렙까지 " + to_date + "일", false)
 				}
 				msg.reply(embed);
 				//msg.reply("\n월요일 : [" + mon + "/77] " + Math.ceil((77-mon)/2) + "주\n화요일 : [" + tue + "/77] " + Math.ceil((77-tue)/2) + "주\n수요일 : [" + wed + "/77] " + Math.ceil((77-wed)/2) + "주\n목요일 : [" + thu + "/77] " + Math.ceil((77-thu)/2) + "주\n금요일 : [" + fri + "/77] " + Math.ceil((77-fri)/2) + "주\n토요일 : [" + sat + "/77] " + Math.ceil((77-sat)/2) + "주\n일요일 : [" + sun + "/77] " + Math.ceil((77-sun)/2) + "주");
