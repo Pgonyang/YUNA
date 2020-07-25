@@ -926,6 +926,13 @@ client.on('message', msg => {
 				}
 			})
 			.then((sc) => {
+				v_0 = sc.user_mon;
+				v_1 = sc.user_tue;
+				v_2 = sc.user_wed;
+				v_3 = sc.user_thu;
+				v_4 = sc.user_fri;
+ 				v_5 = sc.user_sat;
+				v_6 = sc.user_sun;
 				const week = new Array('월','화','수','목','금','토','일')
 				const embed = new Discord.MessageEmbed().setTitle(msg.content.slice(6) + "님의 요일 훈장 현황")
 				.setColor('#0099ff')
