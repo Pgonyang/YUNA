@@ -781,7 +781,7 @@ client.on('message', msg => {
 				}
 			})	
 		} catch(error) {
-			msg.reply("심볼 수정 형식: !심볼설정 닉네임,심볼,심볼 레벨,심볼 성장치");
+			msg.reply("칠요 수정 양식 : !칠요설정 닉네임,요일,횟수");
 		}
 	}
 	else if (msg.content.slice(0, 4) == "!칠요 ") {
@@ -916,7 +916,7 @@ client.on('message', msg => {
 				}
 			})	
 		} catch(error) {
-			msg.reply("칠요 기록 방식 : !칠요 닉네임,요일,횟수");
+			msg.reply("칠요 기록 방식 : !칠요 닉네임,요일,횟수 (요일,횟수 생략시 오늘의 요일 + 2회 기록)");
 		}
 	}
 	else if (msg.content.slice(0, 6) == "!칠요조회 ") {
