@@ -268,6 +268,26 @@ const cnt_boss = sequelize.define('cnt_boss', {
 cnt_boss.sync()
 boss.hasMany(cnt_boss, {as : "cnts"});
 
+const shr = sequelize.define('shr', {
+    origin: {
+        type: Sequelize.STRING,
+        primaryKey: true,
+        allowNull: false
+    },
+    word: {
+        type: Sequelize.STRING,
+		primaryKey: true,
+        allowNull: false
+    }
+}, {
+    classMethods: {},
+    tableName: 'shr',
+    freezeTableName: true,
+    underscored: true,
+    timestamps: false
+});
+shr.sync()
+
 /* value 삭제
 tb.destroy({where: {test_name: 'test'}}).then(function(result) {
     res.json({});
