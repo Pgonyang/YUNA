@@ -287,7 +287,19 @@ const shr = sequelize.define('shr', {
     timestamps: false
 });
 shr.sync()
-
+/*
+shr.create({origin:1,word:"소멸의 여로"})
+shr.create({origin:1,word:"소멸의여로"})
+shr.create({origin:1,word:"여로"})
+shr.create({origin:1,word:"소멸"})
+shr.create({origin:2,word:"츄츄 아일랜드"})
+shr.create({origin:2,word:"츄츄아일랜드"})
+shr.create({origin:2,word:"츄츄"})
+shr.create({origin:3,word:"레헬른"})
+shr.create({origin:4,word:"아르카나"})
+shr.create({origin:5,word:"모라스"})
+shr.create({origin:6,word:"에스페라"})
+*/
 /* value 삭제
 tb.destroy({where: {test_name: 'test'}}).then(function(result) {
     res.json({});
@@ -453,6 +465,15 @@ client.on('message', msg => {
 			const string = msg.content.slice(4).split(',');
 			var name = string[0].trim();
 			var code = string[1].trim();
+			shr.findOne({
+				where: {
+					word: code
+					}
+				})
+				.then((sc) => {
+					if(sc)
+						code = sc.origin;
+					})
 			try {
 				var num = string[2].trim();
 			}
@@ -591,6 +612,15 @@ client.on('message', msg => {
 			const string = msg.content.slice(6).split(',');
 			var name = string[0].trim();
 			var code = string[1].trim();
+			shr.findOne({
+				where: {
+					word: code
+					}
+				})
+				.then((sc) => {
+					if(sc)
+						code = sc.origin;
+					})
 			var lv = string[2].trim();
 			var num = string[3].trim();
 			try {
