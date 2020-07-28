@@ -299,7 +299,22 @@ shr.create({origin:3,word:"레헬른"})
 shr.create({origin:4,word:"아르카나"})
 shr.create({origin:5,word:"모라스"})
 shr.create({origin:6,word:"에스페라"})
+
 */
+shr.create({origin:"월",word:"월요일"})
+shr.create({origin:"월",word:"월욜"})
+shr.create({origin:"화",word:"화요일"})
+shr.create({origin:"화",word:"화욜"})
+shr.create({origin:"수",word:"수요일"})
+shr.create({origin:"수",word:"수욜"})
+shr.create({origin:"목",word:"목요일"})
+shr.create({origin:"목",word:"목욜"})
+shr.create({origin:"금",word:"금요일"})
+shr.create({origin:"금",word:"금욜"})
+shr.create({origin:"토",word:"토요일"})
+shr.create({origin:"토",word:"토욜"})
+shr.create({origin:"일",word:"일요일"})
+shr.create({origin:"일",word:"일욜"})
 /* value 삭제
 tb.destroy({where: {test_name: 'test'}}).then(function(result) {
     res.json({});
