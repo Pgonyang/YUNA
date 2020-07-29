@@ -299,8 +299,6 @@ shr.create({origin:3,word:"레헬른"})
 shr.create({origin:4,word:"아르카나"})
 shr.create({origin:5,word:"모라스"})
 shr.create({origin:6,word:"에스페라"})
-
-*/
 shr.create({origin:"월",word:"월요일"})
 shr.create({origin:"월",word:"월욜"})
 shr.create({origin:"화",word:"화요일"})
@@ -315,6 +313,8 @@ shr.create({origin:"토",word:"토요일"})
 shr.create({origin:"토",word:"토욜"})
 shr.create({origin:"일",word:"일요일"})
 shr.create({origin:"일",word:"일욜"})
+*/
+
 /* value 삭제
 tb.destroy({where: {test_name: 'test'}}).then(function(result) {
     res.json({});
@@ -613,6 +613,61 @@ client.on('message', msg => {
 						default : 
 							msg.reply("데이터 업로드 실패");
 					}			
+				}
+				else {
+					msg.reply("일치하는 계정이 없습니다. 계정 이름을 확인해주세요.");
+				}
+			})	
+		} catch(error) {
+			msg.reply("심볼 추가 형식: !심볼 닉네임,심볼위치,개수(비우면 일일 퀘스트 최대치)");
+		}
+	}
+	else if (msg.content.slice(0, 6) == "!심볼일괄 ") {
+		try{
+			var name = msg.content.slice(6);
+			user.findOne({
+				where: {
+					user_name: name,
+					user_discord: msg.author.id
+				}
+			})
+			.then((sc) => {
+				if(sc){
+					let to_date = {}
+					let max_cnt = {}
+					let to_max = {}
+					let lv={}
+					let num={}
+					let cnt={}
+					for(var a = 1; a<7; a++){
+						lv[a] = eval("sc.user_simbol_" + a + "_lv");
+						num[a] = eval("sc.user_simbol_" + a + "_default")
+						cnt[a] = eval("sc.user_simbol_" + a + "_cnt") + Number(num[a]);
+						max_cnt[a] = lv[a] * lv[a] + 11;
+						while(true){
+							if(cnt[a] >= max_cnt[a]){
+								lv[a] = lv[a] + 1;
+								cnt[a] = cnt[a] - max_cnt[a];
+								max_cnt[a] = lv[a] * lv[a] + 11;
+							}
+							else {
+								break;
+							}
+						}
+						for(var i=lv[a]; i<20; i++){
+							to_max[a] = to_max[a] + (i*i+11)
+						}
+						to_date[a] = Math.ceil((to_max[a]-cnt[a])/(eval("sc.user_simbol_" + a + "_default")))
+					}						
+					user.update({user_simbol_1_lv: lv[1], user_simbol_1_cnt: cnt[1], user_simbol_2_lv: lv[2], user_simbol_2_cnt: cnt[2],user_simbol_3_lv: lv[3], user_simbol_3_cnt: cnt[3],user_simbol_4_lv: lv[4], user_simbol_4_cnt: cnt[4],user_simbol_5_lv: lv[5], user_simbol_5_cnt: cnt[5],user_simbol_6_lv: lv[6], user_simbol_6_cnt: cnt[6]}, {where: {user_name: name}})
+					.then(result => {
+						//여기 내일 수정
+						msg.reply(lv[1]+lv[2]+lv[3]+lv[4]);
+					})
+					.catch(err => {
+						console.error(err);
+						msg.reply("데이터 수정에 실패했어요");
+					});	
 				}
 				else {
 					msg.reply("일치하는 계정이 없습니다. 계정 이름을 확인해주세요.");
