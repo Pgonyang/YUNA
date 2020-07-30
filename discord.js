@@ -635,10 +635,13 @@ client.on('message', msg => {
 				if(sc){
 					let to_date = {}
 					let max_cnt = {}
-					let to_max = {}
+					let to_max = Array.apply(null, new Array(6)).map(Number.prototype.valueOf,0);
 					let lv={}
 					let num={}
 					let cnt={}
+					let s_name = new Array("소멸의 여로", "츄츄 아일랜드", "레헬른", "아르카나", "모라스", "에스페라")
+					const embed = new Discord.MessageEmbed().setTitle(msg.content.slice(6) + "님의 심볼 현황")
+					.setColor('#0099ff')
 					for(var a = 1; a<7; a++){
 						lv[a] = eval("sc.user_simbol_" + a + "_lv");
 						num[a] = eval("sc.user_simbol_" + a + "_default")
@@ -655,14 +658,14 @@ client.on('message', msg => {
 							}
 						}
 						for(var i=lv[a]; i<20; i++){
-							to_max[a] = to_max[a] + (i*i+11)
+							to_max[a-1] = to_max[a-1] + (i*i+11)
 						}
-						to_date[a] = Math.ceil((to_max[a]-cnt[a])/(eval("sc.user_simbol_" + a + "_default")))
+						to_date[a] = Math.ceil((to_max[a-1]-cnt[a])/(eval("sc.user_simbol_" + a + "_default")))
+						embed.addField(s_name[a-1] + " (하루 " + num[a] + "개)", lv[a] + "레벨 (" + cnt[a] + "/" + max_cnt[a] + ") 만렙까지 " + to_date[a] + "일", false)
 					}						
 					user.update({user_simbol_1_lv: lv[1], user_simbol_1_cnt: cnt[1], user_simbol_2_lv: lv[2], user_simbol_2_cnt: cnt[2],user_simbol_3_lv: lv[3], user_simbol_3_cnt: cnt[3],user_simbol_4_lv: lv[4], user_simbol_4_cnt: cnt[4],user_simbol_5_lv: lv[5], user_simbol_5_cnt: cnt[5],user_simbol_6_lv: lv[6], user_simbol_6_cnt: cnt[6]}, {where: {user_name: name}})
 					.then(result => {
-						//여기 내일 수정
-						msg.reply(lv[1]+lv[2]+lv[3]+lv[4]);
+						msg.reply(embed)
 					})
 					.catch(err => {
 						console.error(err);
