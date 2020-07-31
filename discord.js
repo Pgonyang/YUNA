@@ -512,27 +512,6 @@ client.on('message', msg => {
 						num = eval("sc.user_simbol_" + code + "_default")
 					}	
 					cnt = eval("sc.user_simbol_" + code + "_cnt") + Number(num);
-					//switch문 나중에 다른 db 생성과 함께 지울 예정
-					switch(code){
-						case "1" :
-							text = "소멸의 여로";
-							break;
-						case "2" :
-							text = "츄츄 아일랜드";
-							break;
-						case "3" :					
-							text = "레헬른";
-							break;
-						case "4" :					
-							text = "아르카나";
-							break;
-						case "5" :					
-							text = "모라스";
-							break;
-						case "6" :					
-							text = "에스페라";
-							break;							
-					}
 					let max_cnt = lv * lv + 11;
 					while(true){
 						if(cnt >= max_cnt){
@@ -665,7 +644,8 @@ client.on('message', msg => {
 					}						
 					user.update({user_simbol_1_lv: lv[1], user_simbol_1_cnt: cnt[1], user_simbol_2_lv: lv[2], user_simbol_2_cnt: cnt[2],user_simbol_3_lv: lv[3], user_simbol_3_cnt: cnt[3],user_simbol_4_lv: lv[4], user_simbol_4_cnt: cnt[4],user_simbol_5_lv: lv[5], user_simbol_5_cnt: cnt[5],user_simbol_6_lv: lv[6], user_simbol_6_cnt: cnt[6]}, {where: {user_name: name}})
 					.then(result => {
-						msg.reply(embed)
+						msg.reply(embed)['
+						]=
 					})
 					.catch(err => {
 						console.error(err);
