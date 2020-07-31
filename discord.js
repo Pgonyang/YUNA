@@ -900,6 +900,15 @@ client.on('message', msg => {
 			var name = string[0].trim();
 			try {
 				var code = string[1].trim();
+				shr.findOne({
+				where: {
+					word: code
+					}
+				})
+				.then((sc) => {
+					if(sc)
+						code = sc.origin;
+					})
 			}
 			catch (error) {
 				var d = new Date();
