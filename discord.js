@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 const axios = require("axios");
 const cheerio = require("cheerio");
 const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 const pad = require('pad')
 //discord client 선언
 const client = new Discord.Client();
@@ -412,7 +413,7 @@ client.on('message', msg => {
 		const chara = string[1].trim();
 		user.findOne({
 			where: {
-				[Op.or] : [{user_name: name},{user_chara: chara]
+				[Op.or] : [{user_name: name},{user_chara: chara}]
 			}
 		})
 		//일치하는 것이 있을 경우
@@ -422,7 +423,7 @@ client.on('message', msg => {
 			}
 			else {
 				user.create({user_name:name,user_chara: chara, user_discord:msg.author.id})
-				msg.reply("데이터의 생성이 완료되었어요\n" + "닉네임:" + nane + "\n캐릭터 닉네임:" + chara + "\n생성자 id:"+msg.author.id);
+				msg.reply("데이터의 생성이 완료되었어요\n" + "닉네임:" + name + "\n캐릭터 닉네임:" + chara + "\n생성자 id:"+msg.author.id);
 			}
 		});
 	}
@@ -651,8 +652,7 @@ client.on('message', msg => {
 					}						
 					user.update({user_simbol_1_lv: lv[1], user_simbol_1_cnt: cnt[1], user_simbol_2_lv: lv[2], user_simbol_2_cnt: cnt[2],user_simbol_3_lv: lv[3], user_simbol_3_cnt: cnt[3],user_simbol_4_lv: lv[4], user_simbol_4_cnt: cnt[4],user_simbol_5_lv: lv[5], user_simbol_5_cnt: cnt[5],user_simbol_6_lv: lv[6], user_simbol_6_cnt: cnt[6]}, {where: {user_name: name}})
 					.then(result => {
-						msg.reply(embed)['
-						]=
+						msg.reply(embed)
 					})
 					.catch(err => {
 						console.error(err);
