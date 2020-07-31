@@ -28,6 +28,10 @@ const user = sequelize.define('user', {
         type: Sequelize.STRING,
         allowNull: false
     },
+	user_chara: {
+		type: Sequelize.STRING,
+		allowNull: false
+	},
 	user_simbol_1_lv: {
 		type: Sequelize.INTEGER,
 		allowNull: false,
@@ -403,9 +407,12 @@ client.on('message', msg => {
 	}
 	//db 생성
 	else if (msg.content.slice(0, 6) == "!계정생성 ") {
+		const string = msg.content.slice(6).split(',');
+		const name = string[0].trim();
+		const chara = string[1].trim();
 		user.findOne({
 			where: {
-				user_name: msg.content.slice(6).trim()
+				[Op.or] : [{user_name: name},{user_chara: chara]
 			}
 		})
 		//일치하는 것이 있을 경우
@@ -414,8 +421,8 @@ client.on('message', msg => {
 				msg.reply("이미 존재하는 이름이에요");
 			}
 			else {
-				user.create({user_name:msg.content.slice(6).trim(),user_discord:msg.author.id})
-				msg.reply("데이터의 생성이 완료되었어요\n"+"닉네임:"+msg.content.slice(6)+"\n생성자 id:"+msg.author.id);
+				user.create({user_name:name,user_chara: chara, user_discord:msg.author.id})
+				msg.reply("데이터의 생성이 완료되었어요\n" + "닉네임:" + nane + "\n캐릭터 닉네임:" + chara + "\n생성자 id:"+msg.author.id);
 			}
 		});
 	}
