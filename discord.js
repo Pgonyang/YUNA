@@ -294,9 +294,19 @@ client.on('message', msg => {
 		});		
 	}
 	if (msg.content.slice(0, 4) == "!보스 ") {
+		var code =  msg.content.slice(4).trim()
+		shr.findOne({
+				where: {
+					word: code
+					}
+				})
+				.then((sc) => {
+					if(sc)
+						code = sc.origin;
+					})
 		boss.findAll({
 			where: {
-				boss_name: msg.content.slice(4).trim()
+				[Op.or] : [{boss_name: code},{boss_code: code}]
 			},
 			raw: true, //dataValues만 사용
 			order: [['boss_diff', 'ASC']] //정렬
