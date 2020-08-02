@@ -309,12 +309,16 @@ client.on('message', msg => {
 		switch (code) {
 			case "이지" :
 				code = 1
+				break;
 			case "노말" :
 				code = 2
+				break;
 			case "카오스" :
 				code = 3
+				break;
 			case "하드" :
 				code = 4
+				break;
 		}
 		boss.findAll({
 			where: {
