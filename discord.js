@@ -281,7 +281,9 @@ client.on('message', msg => {
 						diff = "하드"
 					}
 					//text = text + bs[i].boss_name + " (" + diff + ") " + pad(10,bs[i].boss_money) + "메소 \n" 
-					boss_embed.addField(bs[i].boss_name + " (" + diff + ")", bs[i].boss_money + "메소", true)
+					var messo = bs[i].boss_money;
+					messo = messo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+					boss_embed.addField(bs[i].boss_name + " (" + diff + ")", messo + "메소", true)
 				}
 				else {
 					//text = text + "(검은 마법사는 월간 보스)"
@@ -304,9 +306,19 @@ client.on('message', msg => {
 					if(sc)
 						code = sc.origin;
 					})
+		switch (code) {
+			case "이지" :
+				code = 1
+			case "노말" :
+				code = 2
+			case "카오스" :
+				code = 3
+			case "하드" :
+				code = 4
+		}
 		boss.findAll({
 			where: {
-				[Op.or] : [{boss_name: code},{boss_code: code}]
+				[Op.or] : [{boss_name: code},{boss_code: code}, {boss_diff: code}]
 			},
 			raw: true, //dataValues만 사용
 			order: [['boss_diff', 'ASC']] //정렬
@@ -330,7 +342,9 @@ client.on('message', msg => {
 					else if(bs[i].boss_diff == 4){
 						diff = "하드"
 					}
-					boss_embed.addField(bs[i].boss_name + " (" + diff + ")", bs[i].boss_money + "메소", false)
+					var messo = bs[i].boss_money;
+					messo = messo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+					boss_embed.addField(bs[i].boss_name + " (" + diff + ")", messo + "메소", true)
 				}
 				else {
 					msg.reply(boss_embed);	
