@@ -1059,6 +1059,7 @@ client.on('message', msg => {
         let url;
         let guild;
         let murung;
+		let seed;
         let union;
 		let name = msg.content.slice(4);
         //async, await을 사용한 비동기 함수 (순서대로 실행하기 위함)
@@ -1141,10 +1142,16 @@ client.on('message', msg => {
 					murung = "없음"
 				}
 				try{
+					seed = save_data3[1].text.toString().slice(0, 2) + "층";
+				} catch (exception) {
+					seed = "없음"
+				}
+				
+				try{
 					union = save_data4[0].text.toString().slice(3, 7);
 					if(save_data4[0].text.toString().slice(0, 2) == "업적"){
 						union= "없음"
-					}
+					}		
 				} catch (exception) {
 					union = "없음"
 				}	
@@ -1161,6 +1168,7 @@ client.on('message', msg => {
                     embed.setDescription("LV." + lv + " " + job + "\n인기도 : " + pop) //레벨, 직업, 인기도 출력
                     //.setThumbnail("") //썸네일 이미지 (우측에 나옴)
                     embed.addField('무릉도장', murung, true) //추가할 항목은 이와 같이
+					embed.addField('더 시드', seed, true)
                     embed.addField('유니온', union, true)
 					user.findOne({
 						where: {
