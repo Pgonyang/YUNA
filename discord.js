@@ -633,6 +633,7 @@ client.on('message', msg => {
 					if(sc)
 						code = sc.origin;
 					})
+			console.log(code)
 			var lv = string[2].trim();
 			var num = string[3].trim();
 			try {
@@ -1152,19 +1153,44 @@ client.on('message', msg => {
         function output() {
             try {
                 //discord embed 기능을 사용하여 유저에게 결과 제공
-                const exampleEmbed = new Discord.MessageEmbed()
+                const embed = new Discord.MessageEmbed()
                     //.setColor('#0099ff') embed 테두리 색
-                    .setTitle(name) //닉네임
-                    .setURL(url) //maple.gg 캐릭터 상세 링크
-                    .setAuthor(guild, save_img2[0].img.toString().replace("https", "http")) //https 형식을 discord 메세지가 출력못해서 http로 변경 작업, 길드 마크
-                    .setDescription("LV." + lv + " " + job + "\n인기도 : " + pop) //레벨, 직업, 인기도 출력
+                    embed.setTitle(name) //닉네임
+                    embed.setURL(url) //maple.gg 캐릭터 상세 링크
+                    embed.setAuthor(guild, save_img2[0].img.toString().replace("https", "http")) //https 형식을 discord 메세지가 출력못해서 http로 변경 작업, 길드 마크
+                    embed.setDescription("LV." + lv + " " + job + "\n인기도 : " + pop) //레벨, 직업, 인기도 출력
                     //.setThumbnail("") //썸네일 이미지 (우측에 나옴)
-                    .addField('무릉도장', murung, true) //추가할 항목은 이와 같이
-                    .addField('유니온', union, true)
-                    .setImage(save_img[0].img.toString().replace("https", "http")) //캐릭터 이미지 출력
+                    embed.addField('무릉도장', murung, true) //추가할 항목은 이와 같이
+                    embed.addField('유니온', union, true)
+					user.findOne({
+						where: {
+							user_chara: name
+						}
+					})
+					.then((sc) => {
+						if(sc){
+							embed.addField('\u200B', '\u200B')
+							const s_name = new Array('소멸의 여로','츄츄 아일랜드','레헬른','아르카나','모라스','에스페라')
+							for(var a = 1; a < 7; a++){
+								let lv = eval("sc.user_simbol_" + a +"_lv")
+								let cnt = eval("sc.user_simbol_" + a +"_cnt")
+								let def = eval("sc.user_simbol_" + a + "_default")
+								let max_cnt = lv * lv + 11;
+								let to_max = 0;
+								for(var i=lv; i<20; i++){
+									to_max = to_max + (i*i+11)
+								}
+								let to_date = Math.ceil((to_max-cnt)/(def))
+								//embed.addField(s_name[a-1] + " (하루 " + def + "개)", lv + "레벨 (" + cnt + "/" + max_cnt + ") 만렙까지 " + to_date + "일", false)
+								embed.addField(s_name[a-1], lv + "레벨 (" + cnt + "/" + max_cnt + ")", true)
+							}
+						}
+						msg.reply(embed);
+					})
+                    embed.setImage(save_img[0].img.toString().replace("https", "http")) //캐릭터 이미지 출력
                     //.setTimestamp() 타임스탬프 //embed가 제작된 시간
-                    .setFooter('마지막 업데이트 : ' + time + "일 전", 'http://maple.gg'); //하단 텍스트 영역, 최근 갱신 일 + maple.gg링크
-                msg.reply(exampleEmbed);
+                    embed.setFooter('마지막 업데이트 : ' + time + "일 전", 'http://maple.gg'); //하단 텍스트 영역, 최근 갱신 일 + maple.gg링크
+                
             } catch (exception) {
                 //만약 페이지 검색 결과가 없거나 서버에 문제가 생길 경우 유저에게 에러 출력
                 msg.reply("에러! 일치하는 닉네임이 없거나, 서버 에러입니다");
