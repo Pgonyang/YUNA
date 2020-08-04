@@ -404,6 +404,15 @@ client.on('message', msg => {
 			const string = msg.content.slice(4).split(',');
 			var name = string[0].trim();
 			var code = string[1].trim();
+			shr.findOne({
+				where: {
+					word: code
+					}
+				})
+				.then((sc) => {
+					if(sc)
+						code = sc.origin;
+					})
 			user.findOne({
 				where: {
 					user_name: name,
