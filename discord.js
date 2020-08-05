@@ -1120,7 +1120,8 @@ client.on('message', msg => {
                 $bodyList4.each(function(i, elem) {
                     save_data2[i] = {
                         //길드 이름
-                        text: $(this).text()
+                        text: $(this).text(),
+						link: $(this).find("a").attr('href')
                     };
                 });
                 $bodyList5.each(function(i, elem) {
@@ -1138,7 +1139,8 @@ client.on('message', msg => {
                 //긁어온 데이터에 뛰어쓰기나 들여쓰기가 많으므로 아래에서 잘라주는 작업
                 //array형식에선 replace를 사용 못하므로 toString()으로 String으로 변경 후 작업
                 guild = save_data2[0].text.toString().replace("\n                            길드\n                                                            ", "");
-                lv = save_data[0].text.toString().replace("Lv.", "")
+                guild_link = save_data2[0].link
+				lv = save_data[0].text.toString().replace("Lv.", "")
                 job = save_data[1].text;
                 pop = save_data[2].text.toString().replace("인기도\n                                ", "");
                 time = save_img[0].time.toString().replace("\n                            \n                            \n                                                                    ", "");
@@ -1173,7 +1175,7 @@ client.on('message', msg => {
                     //.setColor('#0099ff') embed 테두리 색
                     embed.setTitle(name) //닉네임
                     embed.setURL(url) //maple.gg 캐릭터 상세 링크
-                    embed.setAuthor(guild, save_img2[0].img.toString().replace("https", "http")) //https 형식을 discord 메세지가 출력못해서 http로 변경 작업, 길드 마크
+                    embed.setAuthor(guild, save_img2[0].img.toString().replace("https", "http"), guild_link) //https 형식을 discord 메세지가 출력못해서 http로 변경 작업, 길드 마크
                     embed.setDescription("LV." + lv + " " + job + "\n인기도 : " + pop) //레벨, 직업, 인기도 출력
                     //.setThumbnail("") //썸네일 이미지 (우측에 나옴)
                     embed.addField('무릉도장', murung, true) //추가할 항목은 이와 같이
