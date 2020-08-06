@@ -1138,35 +1138,40 @@ client.on('message', msg => {
                 });
                 //긁어온 데이터에 뛰어쓰기나 들여쓰기가 많으므로 아래에서 잘라주는 작업
                 //array형식에선 replace를 사용 못하므로 toString()으로 String으로 변경 후 작업
-                guild = save_data2[0].text.toString().replace("\n                            길드\n                                                            ", "");
-                guild_link = save_data2[0].link
-				lv = save_data[0].text.toString().replace("Lv.", "")
-                job = save_data[1].text;
-                pop = save_data[2].text.toString().replace("인기도\n                                ", "");
-                time = save_img[0].time.toString().replace("\n                            \n                            \n                                                                    ", "");
-                time = time.replace("                                일 전", "");
-                time = time.replace("마지막 활동일: ", "");
-                time = time.replace("\n\n                                    \n                                                            \n                        ", "");
 				try{
-					murung = save_data3[0].text.toString().slice(0, 2) + "층";
-				} catch (exception) {
-					murung = "없음"
+					guild = save_data2[0].text.toString().replace("\n                            길드\n                                                            ", "");
+					guild_link = save_data2[0].link
+					lv = save_data[0].text.toString().replace("Lv.", "")
+					job = save_data[1].text;
+					pop = save_data[2].text.toString().replace("인기도\n                                ", "");
+					time = save_img[0].time.toString().replace("\n                            \n                            \n                                                                    ", "");
+					time = time.replace("                                일 전", "");
+					time = time.replace("마지막 활동일: ", "");
+					time = time.replace("\n\n                                    \n                                                            \n                        ", "");
+					try{
+						murung = save_data3[0].text.toString().slice(0, 2) + "층";
+					} catch (exception) {
+						murung = "없음"
+					}
+					try{
+						seed = save_data3[1].text.toString().slice(0, 2) + "층";
+					} catch (exception) {
+						seed = "없음"
+					}
+					
+					try{
+						union = save_data4[0].text.toString().slice(3, 7);
+						if(save_data4[0].text.toString().slice(0, 2) == "업적"){
+							union= "없음"
+						}		
+					} catch (exception) {
+						union = "없음"
+					}	
+					output()
 				}
-				try{
-					seed = save_data3[1].text.toString().slice(0, 2) + "층";
-				} catch (exception) {
-					seed = "없음"
+				catch{
+					msg.reply("에러! 일치하는 닉네임이 없거나, 서버 에러입니다");
 				}
-				
-				try{
-					union = save_data4[0].text.toString().slice(3, 7);
-					if(save_data4[0].text.toString().slice(0, 2) == "업적"){
-						union= "없음"
-					}		
-				} catch (exception) {
-					union = "없음"
-				}	
-				output()
             })
         function output() {
             try {
@@ -1209,7 +1214,6 @@ client.on('message', msg => {
                     embed.setImage(save_img[0].img.toString().replace("https", "http")) //캐릭터 이미지 출력
                     //.setTimestamp() 타임스탬프 //embed가 제작된 시간
                     embed.setFooter('마지막 업데이트 : ' + time + "일 전", 'http://maple.gg'); //하단 텍스트 영역, 최근 갱신 일 + maple.gg링크
-                
             } catch (exception) {
                 //만약 페이지 검색 결과가 없거나 서버에 문제가 생길 경우 유저에게 에러 출력
                 msg.reply("에러! 일치하는 닉네임이 없거나, 서버 에러입니다");
