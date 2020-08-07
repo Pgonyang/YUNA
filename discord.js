@@ -295,6 +295,10 @@ client.on('message', msg => {
 			}
 		});		
 	}
+	else if (msg.content.slice(0, 6) == "!현재상태 ") {
+		const string = msg.content.slice(6);
+		client.user.setActivity(string);
+	}
 	if (msg.content.slice(0, 4) == "!보스 ") {
 		var code =  msg.content.slice(4).trim()
 		shr.findOne({
@@ -1223,6 +1227,7 @@ client.on('message', msg => {
 })
 
 client.on('ready', () => {
+	client.user.setActivity('날로 먹고싶어');
     //처음 실행 시 디스코드 봇 실행 후 작동
     console.log(`${client.user.tag}으로 접속되었습니다!`);
 });
