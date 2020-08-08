@@ -311,7 +311,11 @@ client.on('message', msg => {
 			max = Math.floor(max);
 			return Math.floor(Math.random() * (max - min + 1)) + min;
 		}
-		msg.reply("🎲"+getRand(1,Number(string)));
+		var result = getRand(1,Number(string));
+		if(isNaN(result)){
+			result = getRand(1,100);
+		}
+		msg.reply("🎲"+result);
 	}
 	if (msg.content.slice(0, 4) == "!보스 ") {
 		var code =  msg.content.slice(4).trim()
