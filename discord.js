@@ -299,6 +299,20 @@ client.on('message', msg => {
 		const string = msg.content.slice(6);
 		client.user.setActivity(string);
 	}
+	else if (msg.content.slice(0, 4) == "!주사위") {
+		if(msg.content.slice(4).trim() == ""){
+			string = 100;
+		}
+		else {
+			string = msg.content.slice(4).trim();
+		}
+		function getRand(min, max) {
+			min = Math.ceil(min);
+			max = Math.floor(max);
+			return Math.floor(Math.random() * (max - min + 1)) + min;
+		}
+		msg.reply("🎲"+getRand(1,Number(string)));
+	}
 	if (msg.content.slice(0, 4) == "!보스 ") {
 		var code =  msg.content.slice(4).trim()
 		shr.findOne({
