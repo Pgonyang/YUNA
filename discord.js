@@ -8,6 +8,7 @@ const pad = require('pad')
 //discord client 선언
 const client = new Discord.Client();
 const key = require('./key/key.js');
+const cron = require('node-cron');
 //db 연동
 const sequelize = new Sequelize(
     'YUNA', // 데이터베이스 이름
@@ -209,6 +210,11 @@ const cnt_boss = sequelize.define('cnt_boss', {
 		primaryKey: true,
         allowNull: false
     },
+	if_this_week: {
+		type: Sequelize.BOOLEAN,
+		defaultValue: true,
+        allowNull: false
+	},
 	create_at: {
         type: Sequelize.DATEONLY,
 		allowNull: false,
@@ -251,6 +257,12 @@ tb.destroy({where: {test_name: 'test'}}).then(function(result) {
     //TODO: error handling
 });
 */
+
+cron.schedule('0 0 * * 5', function(){
+	console.log('화요일마다 돌아가는지 체크');
+	cnt_boss.update({ if_this_week : false },{ where : { if_this_week : true }});
+});
+
 //디스코드 메세지를 받을 경우
 client.on('message', msg => {
 	if (msg.content == "!주간보스") {
