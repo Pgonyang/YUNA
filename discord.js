@@ -9,6 +9,11 @@ const pad = require('pad')
 const client = new Discord.Client();
 const key = require('./key/key.js');
 const cron = require('node-cron');
+const { createCanvas, loadImage } = require('canvas');
+const canvas = createCanvas(100, 100);
+const ctx = canvas.getContext('2d');
+const fs = require('fs');
+const sys = require('sys');
 //db 연동
 const sequelize = new Sequelize(
     'YUNA', // 데이터베이스 이름
@@ -311,6 +316,20 @@ client.on('message', msg => {
 		const string = msg.content.slice(6);
 		client.user.setActivity(string);
 	}
+	else if (msg.content == "!테스트") {
+		ctx.font = '30px Impact'
+		ctx.fillText('Awesome!', 50, 100)
+		loadImage('examples/images/lime-cat.jpg').then((image) => {
+		  ctx.drawImage(image, 50, 0, 70, 70)
+		})
+		var img = canvas.toDataURL();
+		var data = img.replace(/^data:image\/\w+;base64,/, "");
+		var buf = new Buffer(data, 'base64');
+		fs.writeFileSync('tmp_img/image.png', buf);
+	}
+
+ 
+  
 	else if (msg.content.slice(0, 4) == "!주사위") {
 		if(msg.content.slice(4).trim() == ""){
 			string = 100;
@@ -1277,8 +1296,17 @@ client.on('message', msg => {
                     };
                 });
 				try{
-					console.log(save_data[0].text)
-					console.log(save_data[0].img)
+					console.log(save_data[1].text)
+					console.log(save_data[1].img)
+					//ctx.font = '30px Impact'
+					//ctx.fillText('Awesome!', 50, 100)
+					loadImage("https://avatar.maplestory.nexon.com/Character/FCMACKCGKFPKNHODMNNDBIAGOLFJFGHGFKIOCCEKNLMDGLPGIGHIMGLEDODDCEEKPNOHMJKGHGGAIECELFAIIKIKNLLMFGLOHLHGICMCPPLKKAJONIJGNJJFKDBBLDGJKFMOAFMFEINHHGFNFIOGELANHHCKFGPFMOBHFGKDDMGINDBCPBMANKEDAIINBBCGGBKEEDFILHLBOODPMAKPHCAKJLLEIBKEALBBINNODDAKLAHNDLAMCBPFDMMMHMAE.png").then((image) => {
+					  ctx.drawImage(image,0,0)
+					})
+					var img = canvas.toDataURL();
+					var data = img.replace(/^data:image\/\w+;base64,/, "");
+					var buf = new Buffer(data, 'base64');
+					fs.writeFileSync('tmp_img/image.png', buf);
 				}
 				catch{
 					msg.reply("에러! 일치하는 닉네임이 없거나, 서버 에러입니다");
