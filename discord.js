@@ -1179,6 +1179,8 @@ client.on('message', msg => {
 					job = save_data[1].text;
 					pop = save_data[2].text.toString().replace(/ /g, "").replace(/\n/g, "").replace("인기도", "");
 					time = save_img[0].time.toString().replace(/\n/g, "").replace(/ /g, "").replace("일전","").replace("마지막활동일:", "");
+					if(time == "")
+						time = "?"
 					try{
 						murung = save_data3[0].text.toString().slice(0, 2) + "층";
 					} catch (exception) {
@@ -1251,13 +1253,62 @@ client.on('message', msg => {
             }
         };
     }
+    else if (msg.content.slice(0, 4) == "!코디 ") {
+        //변수 선언 let은 var와 const 사이의 느낌
+        let save_data = [];
+		let name = msg.content.slice(4);
+        const getHtml = async () => {
+            try {
+                url = encodeURI("https://maple.gg/u/" + name);
+                return await axios.get(encodeURI("https://maple.gg/u/" + name));
+            } catch (error) {
+                msg.reply("웹 크롤링 에러입니다");
+                console.error(error);
+            }
+        };
+        getHtml()
+            .then(html => {
+                const $ = cheerio.load(html.data);
+                const $bodyList = $("div.row").children("div.avatar-collection-item.col-lg-2.col-md-4.col-6");
+                $bodyList.each(function(i, elem) {
+                    save_data[i] = {
+                        text: $(this).text(),
+						img: $(this).find('img').attr('src')
+                    };
+                });
+				try{
+					console.log(save_data[0].text)
+					console.log(save_data[0].img)
+				}
+				catch{
+					msg.reply("에러! 일치하는 닉네임이 없거나, 서버 에러입니다");
+				}
+            })
+        function output() {
+            try {
+                //discord embed 기능을 사용하여 유저에게 결과 제공
+                const embed = new Discord.MessageEmbed()
+                    //.setColor('#0099ff') embed 테두리 색
+                    embed.setTitle(name) //닉네임
+                    embed.setURL(url) //maple.gg 캐릭터 상세 링크
+                    embed.setAuthor(guild, save_img2[0].img.toString().replace("https", "http"), guild_link) //https 형식을 discord 메세지가 출력못해서 http로 변경 작업, 길드 마크
+                    embed.setDescription("LV." + lv + " " + job + "\n인기도 : " + pop) //레벨, 직업, 인기도 출력
+                    //.setThumbnail("") //썸네일 이미지 (우측에 나옴)
+                    embed.addField('무릉도장', murung, true) //추가할 항목은 이와 같이
+                    embed.setImage(save_img[0].img.toString().replace("https", "http")) //캐릭터 이미지 출력
+                    //.setTimestamp() 타임스탬프 //embed가 제작된 시간
+                    embed.setFooter('마지막 활동일 : ' + time + "일 전", 'http://maple.gg'); //하단 텍스트 영역, 최근 갱신 일 + maple.gg링크
+            } catch (exception) {
+                //만약 페이지 검색 결과가 없거나 서버에 문제가 생길 경우 유저에게 에러 출력
+                msg.reply("에러! 일치하는 닉네임이 없거나, 서버 에러입니다");
+            }
+        };
+    }
 })
-
 client.on('ready', () => {
 	client.user.setActivity('날로 먹고싶어');
     //처음 실행 시 디스코드 봇 실행 후 작동
     console.log(`${client.user.tag}으로 접속되었습니다!`);
 });
-
 //디스코드 앱 인증 키
 client.login(key.key_value);
