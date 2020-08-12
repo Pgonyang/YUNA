@@ -1273,6 +1273,7 @@ client.on('message', msg => {
         };
     }
     else if (msg.content.slice(0, 4) == "!코디 ") {
+		var arr = new Array();
         //변수 선언 let은 var와 const 사이의 느낌
         let save_data = [];
 		let name = msg.content.slice(4);
@@ -1296,8 +1297,19 @@ client.on('message', msg => {
                     };
                 });
 				try{
-					console.log(save_data[1].text)
-					console.log(save_data[1].img)
+					var i = 0;
+					while(true){
+						try{
+							var tmp_text = save_data[i].text.toString().trim().replace(/ /g, "").replace(/\n/g, "");
+							var tmp_img = save_data[i].img.toString().trim().replace(/ /g, "").replace(/\n/g, "");
+							i++;
+							arr.push({text:tmp_text,img:tmp_img})
+						}
+						catch (error) {
+							break;
+						}
+					}
+					console.dir(arr)
 					//ctx.font = '30px Impact'
 					//ctx.fillText('Awesome!', 50, 100)
 					loadImage("https://avatar.maplestory.nexon.com/Character/FCMACKCGKFPKNHODMNNDBIAGOLFJFGHGFKIOCCEKNLMDGLPGIGHIMGLEDODDCEEKPNOHMJKGHGGAIECELFAIIKIKNLLMFGLOHLHGICMCPPLKKAJONIJGNJJFKDBBLDGJKFMOAFMFEINHHGFNFIOGELANHHCKFGPFMOBHFGKDDMGINDBCPBMANKEDAIINBBCGGBKEEDFILHLBOODPMAKPHCAKJLLEIBKEALBBINNODDAKLAHNDLAMCBPFDMMMHMAE.png").then((image) => {
