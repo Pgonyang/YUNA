@@ -263,6 +263,7 @@ tb.destroy({where: {test_name: 'test'}}).then(function(result) {
 });
 */
 
+//cron을 통해 주간보스 관리
 cron.schedule('0 0 * * 5', function(){
 	console.log('화요일마다 돌아가는지 체크');
 	cnt_boss.update({ if_this_week : false },{ where : { if_this_week : true }});
@@ -270,7 +271,9 @@ cron.schedule('0 0 * * 5', function(){
 
 //디스코드 메세지를 받을 경우
 client.on('message', msg => {
+	//메세지 일치 여부 확인
 	if (msg.content == "!주간보스") {
+		//boss db 검색
 		boss.findAll({
 			where: {
 				if_weekly: true
