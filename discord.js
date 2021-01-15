@@ -330,8 +330,6 @@ client.on('message', msg => {
 		var buf = new Buffer(data, 'base64');
 		fs.writeFileSync('tmp_img/image.png', buf);
 	}
-
- 
   
 	else if (msg.content.slice(0, 4) == "!주사위") {
 		if(msg.content.slice(4).trim() == ""){
@@ -1349,7 +1347,6 @@ client.on('message', msg => {
     }
 })
 client.on('ready', () => {
-	client.user.setActivity('날로 먹고싶어');
     //처음 실행 시 디스코드 봇 실행 후 작동
     console.log(`${client.user.tag}으로 접속되었습니다!`);
 });
